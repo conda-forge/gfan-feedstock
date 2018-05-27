@@ -21,17 +21,19 @@ source:
     - patches/Makefile.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
   build:
-    - toolchain
-    - gmp >=5.0.1,<7
+    - {{ compiler('cxx') }}
+
+  host:
+    - gmp
     - cddlib
 
   run:
-    - gmp >=5.0.1,<7
+    - gmp
     - cddlib
 
 test:
