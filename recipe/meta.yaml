@@ -1,4 +1,4 @@
-{% set version = "0.5" %}
+{% set version = "0.6.2" %}
 {% set name = "gfan" %}
 
 package:
@@ -8,15 +8,10 @@ package:
 source:
   fn: {{ name }}{{ version }}.tar.gz
   url: http://home.math.au.dk/jensen/software/gfan/gfan{{ version }}.tar.gz
-  sha256: aaeabcf03aad9e426f1ace1f633ffa3200349600314063a7717c20a3e24db329
+  sha256: a674d5e5dc43634397de0d55dd5da3c32bd358d05f72b73a50e62c1a1686f10a
   patches:
     # Patches taken from https://github.com/sagemath/sage
-    # Remove variable redefinition
-    - patches/app_minkowski.cpp.patch
-    # Remove friend function declaration default arguments
-    - patches/friend.patch
-    # rank is ambiguous on gcc >= 6.1
-    - patches/gfan-0.5-gcc6.1-compat.patch
+    - patches/nodel.patch
     # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
     - patches/Makefile.patch
 
@@ -50,3 +45,4 @@ about:
 extra:
   recipe-maintainers:
     - isuruf
+    - saraedum
