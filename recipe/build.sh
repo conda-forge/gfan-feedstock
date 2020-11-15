@@ -13,4 +13,4 @@ make -j${CPU_COUNT}
 mkdir -p "$PREFIX/bin"
 cp -pf gfan "$PREFIX/bin/"
 cd "$PREFIX/bin"
-./gfan installlinks
+gfan installlinks

@@ -16,17 +16,17 @@ source:
     - patches/Makefile.patch
 
 build:
-  number: 1002
+  number: 1003
   skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('cxx') }}
     - make
+    - gfan  # [build_platform != target_platform]
   host:
     - gmp
     - cddlib
-
   run:
     - gmp
     - cddlib
@@ -37,7 +37,7 @@ test:
 
 about:
   home: http://home.math.au.dk/jensen/software/gfan/gfan.html
-  license: GPLv2+
+  license: GPL-2.0-or-later
   license_file: COPYING
   summary: Gfan is a software package for computing Gröbner fans and tropical varieties
   doc_url: http://home.math.au.dk/jensen/software/gfan/gfanmanual0.5.pdf
