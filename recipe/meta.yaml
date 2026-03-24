@@ -11,7 +11,8 @@ source:
   sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
   patches:
     # Patches taken from https://github.com/sagemath/sage
-    - patches/nodel.patch  # [osx]
+    # replace the old non-delete workaround with proper virtual destructors
+    - patches/nodel.patch
     # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
     - patches/Makefile.patch
     # use std::pmr instead of std::experimental::pmr (libc++ compatibility)
