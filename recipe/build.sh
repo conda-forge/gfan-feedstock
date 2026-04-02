@@ -13,5 +13,5 @@ if [[ "$target_platform" == linux-* ]]; then
   export CXXFLAGS="$CXXFLAGS -D_64BITLONGINT"
 fi
 
-make -j${CPU_COUNT} cddnoprefix=yes
+make -j${CPU_COUNT} cddnoprefix=yes OPTFLAGS="-O3 -DGMPRATIONAL -DNDEBUG"
 make PREFIX="$PREFIX" install

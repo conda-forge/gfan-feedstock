@@ -1,5 +1,5 @@
---- a/Makefile
-+++ b/Makefile
+--- a/Makefile	2026-04-03 00:06:23.863809616 +0800
++++ b/Makefile	2026-04-03 01:54:35.675507487 +0800
 @@ -22,20 +22,10 @@
  endif
  
@@ -99,7 +99,18 @@
  
  CATSOBJECTS =	lp_cdd.o \
  		parser.o \
-@@ -508,7 +468,7 @@
+@@ -420,9 +380,7 @@
+ # (compiling with gcc version 4.7.2 and running gfan _tropicaltraverse on a starting cone for Grassmann3_7)
+ # Either this is a bug in the code or in the compiler. The bug disappears by compiling with -fno-guess-branch-probability
+ src/symmetrictraversal.o: src/symmetrictraversal.cpp
+-	$(CXX) $(CFLAGS) -fno-guess-branch-probability  -c src/symmetrictraversal.cpp -o src/symmetrictraversal.o
+-# If compiling with clang, use the line below instead:
+-#	$(CXX) $(CFLAGS) -c src/symmetrictraversal.cpp -o src/symmetrictraversal.o
++	$(CXX) $(CXXFLAGS) -c src/symmetrictraversal.cpp -o src/symmetrictraversal.o
+ 
+ # Define suffixes to make the program compile on legolas.imf.au.dk :
+ .SUFFIXES: .o .cpp .c
+@@ -508,7 +466,7 @@
  
  $(MAIN): $(OBJECTS)
  #	$(CCLINKER) $(OBJECTS) $(ADDITIONALLINKOPTIONS) $(GPROFFLAG) -lpthread  -o $(MAIN)
@@ -108,8 +119,12 @@
  
  release:
  	rm -f -r $(RELEASEDIR)/*
-@@ -596,3 +556,3 @@
+@@ -634,7 +592,7 @@
+ .c.o:
+ 	$(CC) $(CFLAGS) -c $< -o $(patsubst %.c,%.o,$<)
  .cpp.o:
 -	$(CXX) $(CFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
 +	$(CXX) $(CXXFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
  
+ # wget http://ftp.sunet.se/pub/gnu/gmp/gmp-4.2.2.tar.gz
+ # tar -xzvf gmp-4.2.2.tar.gz
