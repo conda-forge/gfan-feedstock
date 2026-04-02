@@ -10,19 +10,10 @@ source:
   url: http://home.math.au.dk/jensen/software/gfan/gfan{{ version }}.tar.gz
   sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
   patches:
-    # Patches taken from https://github.com/sagemath/sage
-    # replace the old non-delete workaround with proper virtual destructors
-    - patches/nodel.patch
-    # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
-    - patches/Makefile.patch
-    # use std::pmr instead of std::experimental::pmr (libc++ compatibility)
-    - patches/pmr.patch
-    # fix CircuitTableIntPOD construction from int (no implicit constructor)
-    - patches/circuittableint.patch
-    # add missing #include <cstdint> and #include <atomic>
-    - patches/missing_includes.patch
-    # guard #include <execution> with __has_include, add <algorithm> for std::for_each
-    - patches/components.patch
+    #these 3 patches are from https://gitlab.archlinux.org/archlinux/packaging/packages/gfan/-/blob/main/
+    - fix-build.patch
+    - gcc-14.patch
+    - gfan-cflags.patch
 
 build:
   number: 0
