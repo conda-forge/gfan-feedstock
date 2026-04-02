@@ -1,16 +1,17 @@
 #!/bin/bash
 
-export CPPFLAGS="-DNOCDDPREFIX -DDISABLE_COMMENTATOR $CPPFLAGS"
+export CPPFLAGS="-DNOCDDPREFIX $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -lcddgmp -lgmp -lm"
 export CFLAGS="-g -fPIC $CFLAGS"
-export CXXFLAGS="-DNOCDDPREFIX -g -fPIC $CXXFLAGS"
+export CXXFLAGS="-DNOCDDPREFIX -g -fPIC -std=c++2a $CXXFLAGS"
 
-if [[ "$target_platform" == "osx-64" ]]; then
-  find ${SRC_DIR}/src -type f -print0 | xargs -0 sed -i '' "s/log2/logger2/g"
+if [[ "$CXX" == *"clang"* ]]; then
+  export CXXFLAGS="$CXXFLAGS -fexperimental-library"
 fi
 
-make -j${CPU_COUNT}
-mkdir -p "$PREFIX/bin"
-cp -pf gfan "$PREFIX/bin/"
-cd "$PREFIX/bin"
-gfan installlinks
+if [[ "$target_platform" != "osx-arm64" ]]; then
+  export CXXFLAGS="$CXXFLAGS -D_64BITLONGINT"
+fi
+
+make -j${CPU_COUNT} cddnoprefix=yes
+make PREFIX="$PREFIX" install

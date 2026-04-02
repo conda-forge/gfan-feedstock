@@ -1,4 +1,4 @@
-{% set version = "0.6.2" %}
+{% set version = "0.7" %}
 {% set name = "gfan" %}
 
 package:
@@ -7,16 +7,22 @@ package:
 
 source:
   fn: {{ name }}{{ version }}.tar.gz
-  url: http://home.math.au.dk/jensen/software/gfan/gfan{{ version }}.tar.gz
-  sha256: a674d5e5dc43634397de0d55dd5da3c32bd358d05f72b73a50e62c1a1686f10a
+  url: https://users-math.au.dk/~jensen/software/gfan/gfan{{ version }}.tar.gz
+  sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
   patches:
-    # Patches taken from https://github.com/sagemath/sage
-    - patches/nodel.patch
     # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
     - patches/Makefile.patch
+    # This patch from https://github.com/sagemath/sage
+    # Comment out delete of miscompiled class (clang issue)
+    - patches/nodel.patch
+    # These 2 Patches from https://github.com/Macaulay2/homebrew-tap
+    - patches/circuittableint.patch
+    - patches/gfanlib_z.patch
+    # Use std::pmr instead of std::experimental::pmr (C++17 standard, needed for clang)
+    - patches/experimental_pmr.patch
 
 build:
-  number: 1003
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -36,11 +42,11 @@ test:
     - test -f ${PREFIX}/bin/gfan
 
 about:
-  home: http://home.math.au.dk/jensen/software/gfan/gfan.html
+  home: https://users-math.au.dk/~jensen/software/gfan/gfan.html
   license: GPL-2.0-or-later
   license_file: COPYING
   summary: Gfan is a software package for computing Gröbner fans and tropical varieties
-  doc_url: http://home.math.au.dk/jensen/software/gfan/gfanmanual0.5.pdf
+  doc_url: https://users-math.au.dk/~jensen/software/gfan/gfanmanual0.5.pdf
 
 extra:
   recipe-maintainers:
