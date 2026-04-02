@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export CPPFLAGS="-DNOCDDPREFIX $CPPFLAGS"
+export CPPFLAGS="-DNOCDDPREFIX -I$PREFIX/include/cddlib $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -lcddgmp -lgmp -lm"
 export CFLAGS="-g -fPIC $CFLAGS"
-export CXXFLAGS="-DNOCDDPREFIX -g -fPIC -std=c++2a $CXXFLAGS"
+export CXXFLAGS="-DNOCDDPREFIX -I$PREFIX/include/cddlib -g -fPIC -std=c++2a $CXXFLAGS"
 
 if [[ "$CXX" == *"clang"* ]]; then
   export CXXFLAGS="$CXXFLAGS -fexperimental-library"
