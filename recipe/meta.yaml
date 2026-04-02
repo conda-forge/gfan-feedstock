@@ -12,9 +12,6 @@ source:
   patches:
     # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
     - patches/Makefile.patch
-    # This patch from https://github.com/sagemath/sage
-    # Comment out delete of miscompiled class (clang issue)
-    - patches/nodel.patch
     # These 2 Patches from https://github.com/Macaulay2/homebrew-tap
     - patches/circuittableint.patch
     - patches/gfanlib_z.patch
