@@ -23,7 +23,7 @@ source:
     # Add missing #include <atomic> and #include <memory>
     - patches/missing_includes.patch
     # Rename log2 macro to gfan_log2 to avoid conflict with std::log2 (macOS/clang)
-    - patches/rename_log2.patch # [osx]
+    - patches/rename_log2.patch
 
 build:
   number: 0
