@@ -9,7 +9,7 @@ if [[ "$CXX" == *"clang"* ]]; then
   export CXXFLAGS="$CXXFLAGS -fexperimental-library"
 fi
 
-if [[ "$target_platform" != "osx-arm64" ]]; then
+if [[ "$target_platform" == linux-* ]]; then
   export CXXFLAGS="$CXXFLAGS -D_64BITLONGINT"
 fi
 

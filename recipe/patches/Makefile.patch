@@ -108,3 +108,8 @@
  
  release:
  	rm -f -r $(RELEASEDIR)/*
+@@ -596,3 +556,3 @@
+ .cpp.o:
+-	$(CXX) $(CFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
++	$(CXX) $(CXXFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
+ 
