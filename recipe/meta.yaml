@@ -12,10 +12,6 @@ source:
   patches:
     # replace the old non-delete workaround with proper virtual destructors
     - patches/nodel.patch
-    # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
-    - patches/Makefile.patch
-    # use std::pmr instead of std::experimental::pmr (libc++ compatibility)
-    - patches/pmr.patch
     # fix CircuitTableIntPOD construction from int (no implicit constructor)
     - patches/circuittableint.patch
     # add missing #include <cstdint> and #include <atomic>
