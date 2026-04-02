@@ -10,7 +10,6 @@ source:
   url: http://home.math.au.dk/jensen/software/gfan/gfan{{ version }}.tar.gz
   sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
   patches:
-    # Patches taken from https://github.com/sagemath/sage
     # replace the old non-delete workaround with proper virtual destructors
     - patches/nodel.patch
     # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
