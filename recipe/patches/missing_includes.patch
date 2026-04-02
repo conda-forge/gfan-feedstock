@@ -1,0 +1,20 @@
+--- a/src/gfanlib_hypersurfaceintersection.h
++++ b/src/gfanlib_hypersurfaceintersection.h
+@@ -10,6 +10,7 @@
+ 
+ 
+ #include "gfanlib_tableau.h"
++#include <atomic>
+ #include <functional>
+ 
+ namespace gfan{
+--- a/src/app_anton.h
++++ b/src/app_anton.h
+@@ -14,6 +14,7 @@
+ #include "gfanlib_circuittableinteger.h"
+ #include "gfanlib_q.h"
+ #include "wallideal.h"
++#include <memory>
+ //#include "rational.h"
+ 
+ template <class Os, class K>

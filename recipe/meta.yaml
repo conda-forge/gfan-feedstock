@@ -20,8 +20,8 @@ source:
     - patches/gfanlib_z.patch
     # Use std::pmr instead of std::experimental::pmr (C++17 standard, needed for clang)
     - patches/experimental_pmr.patch
-    # Add missing #include <atomic>
-    - patches/missing_atomic.patch
+    # Add missing #include <atomic> and #include <memory>
+    - patches/missing_includes.patch
 
 build:
   number: 0
