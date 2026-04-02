@@ -1,0 +1,1481 @@
+diff -ru a/src/app_doesidealcontain.cpp b/src/app_doesidealcontain.cpp
+--- a/src/app_doesidealcontain.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/app_doesidealcontain.cpp	2026-04-03 01:30:43.923579061 +0800
+@@ -52,9 +52,9 @@
+     	for(PolynomialSet::const_iterator i=b.begin();i!=b.end();i++)
+     	{
+     		Polynomial remainder=division(multiplier* *i,a,LexicographicTermOrder());
+-	log2 AsciiPrinter(Stderr).printString("Remainder: ");
+-	log2 AsciiPrinter(Stderr).printPolynomial(remainder);
+-	log2 AsciiPrinter(Stderr).printNewLine();
++	gfan_log2 AsciiPrinter(Stderr).printString("Remainder: ");
++	gfan_log2 AsciiPrinter(Stderr).printPolynomial(remainder);
++	gfan_log2 AsciiPrinter(Stderr).printNewLine();
+ 	if(!remainder.isZero())
+ 	  {
+ 	    log1 AsciiPrinter(Stderr).printString("Polynomial not in ideal: ");
+diff -ru a/src/app_fiberpolytope.cpp b/src/app_fiberpolytope.cpp
+--- a/src/app_fiberpolytope.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/app_fiberpolytope.cpp	2026-04-03 01:30:43.923579061 +0800
+@@ -166,7 +166,7 @@
+ 		    for(PolyhedralFan::coneIterator i=f1.conesBegin();i!=f1.conesEnd();i++)
+ 			{
+ 		    	static int a;
+-		    	log2 cerr<<"Processing Cone "<<a++<<" which has dimension "<<i->dimension()<<endl;
++		    	gfan_log2 cerr<<"Processing Cone "<<a++<<" which has dimension "<<i->dimension()<<endl;
+ 		    	SecondaryFanTraverser traverser(triangulationWithFullDimensionalIntersection(t,*i),*i);
+ 				symmetricTraverse(traverser,target,&s);
+ 			}
+diff -ru a/src/app_groebnerfan.cpp b/src/app_groebnerfan.cpp
+--- a/src/app_groebnerfan.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/app_groebnerfan.cpp	2026-04-03 01:30:43.927579062 +0800
+@@ -74,7 +74,7 @@
+ 	{
+ 	  log1 fprintf(Stderr,"Computing Groebner Basis...\n");
+ 	  buchberger(&g,StandardGradedLexicographicTermOrder());
+-	  log2 AsciiPrinter(Stderr).printPolynomialSet(g);
++	  gfan_log2 AsciiPrinter(Stderr).printPolynomialSet(g);
+ 	}
+       log1 fprintf(Stderr,"A reduced Groebner basis has been computed\n");
+ 
+@@ -113,7 +113,7 @@
+ 	    for(PolyhedralFan::coneIterator i=f1.conesBegin();i!=f1.conesEnd();i++)
+ 		{
+ 	    	static int t;
+-	    	log2 cerr<<"Processing Cone "<<t++<<" which has dimension "<<i->dimension()<<endl;
++	    	gfan_log2 cerr<<"Processing Cone "<<t++<<" which has dimension "<<i->dimension()<<endl;
+ 	    	GroebnerFanTraverser traverser(groebnerBasisWithFullDimensionalIntersection(g,*i),*i);
+     		SymmetricTargetCounterInterrupted target2(target,optionInterrupt.getValue());
+ 			symmetricTraverse(traverser,target2,&s);
+diff -ru a/src/app_main.cpp b/src/app_main.cpp
+--- a/src/app_main.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/app_main.cpp	2026-04-03 01:30:44.003579065 +0800
+@@ -143,7 +143,7 @@
+ 	{
+ 	  log1 fprintf(Stderr,"Computing Groebner Basis...\n");
+ 	  buchberger(&g,StandardGradedLexicographicTermOrder());
+-	  log2 AsciiPrinter(Stderr).printPolynomialSet(g);
++	  gfan_log2 AsciiPrinter(Stderr).printPolynomialSet(g);
+ 	}
+       log1 fprintf(Stderr,"A reduced Groebner basis has been computed\n");
+     }
+diff -ru a/src/app_resultantfan.cpp b/src/app_resultantfan.cpp
+--- a/src/app_resultantfan.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/app_resultantfan.cpp	2026-04-03 01:30:43.927579062 +0800
+@@ -164,7 +164,7 @@
+               for(IntegerVectorList::const_iterator i=linealityGen.begin();i!=linealityGen.end();i++)temp.push_back(*i);
+               for(IntegerVectorList::const_iterator i=gen.begin();i!=gen.end();i++)temp.push_back(*i);
+ 
+-              if(::rank(rowsToIntegerMatrix(temp,N))!=N){log2 debug<<"Skipping\n";continue;}
++              if(::rank(rowsToIntegerMatrix(temp,N))!=N){gfan_log2 debug<<"Skipping\n";continue;}
+             }
+ 
+ 
+@@ -182,10 +182,10 @@
+           C.canonicalize();
+    //       debug<<toNonSpecialSubspace(gen,*special);
+   //        debug<<toNonSpecialSubspace(linealityGen,*special);
+-          log2 debug<<":"<<C.dimension()<<"\n";
++          gfan_log2 debug<<":"<<C.dimension()<<"\n";
+           if(C.dimension()==n-1)
+             {
+-              log2 debug<<"adding\n";
++              gfan_log2 debug<<"adding\n";
+               F.push_back(C);
+             }
+         }
+diff -ru a/src/app_secondaryfan.cpp b/src/app_secondaryfan.cpp
+--- a/src/app_secondaryfan.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/app_secondaryfan.cpp	2026-04-03 01:30:43.931579061 +0800
+@@ -385,7 +385,7 @@
+ 		    for(PolyhedralFan::coneIterator i=f1.conesBegin();i!=f1.conesEnd();i++)
+ 			{
+ 		    	static int a;
+-		    	log2 cerr<<"Processing Cone "<<a++<<" which has dimension "<<i->dimension()<<endl;
++		    	gfan_log2 cerr<<"Processing Cone "<<a++<<" which has dimension "<<i->dimension()<<endl;
+ 		    	SecondaryFanTraverser traverser(triangulationWithFullDimensionalIntersection(t,*i),*i);
+ 				SymmetricTargetCounterInterrupted target2(target,optionInterrupt.getValue());
+ 				symmetricTraverse(traverser,target2,&s);
+diff -ru a/src/app_tropicalintersection.cpp b/src/app_tropicalintersection.cpp
+--- a/src/app_tropicalintersection.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/app_tropicalintersection.cpp	2026-04-03 01:30:43.931579061 +0800
+@@ -37,7 +37,7 @@
+ 	bool process(ConeTraverser &traverser)
+ 	{
+ 		IntegerVector w=traverser.refToPolyhedralCone().getRelativeInteriorPoint();
+-		log2 AsciiPrinter(Stderr) << "Testing weight vector:\n"<<w<<"\n";
++		gfan_log2 AsciiPrinter(Stderr) << "Testing weight vector:\n"<<w<<"\n";
+ 		WeightReverseLexicographicTermOrder T(w);
+ 		buchberger(&g,T);
+ 		PolynomialSet temp=initialForms(g,w);
+diff -ru a/src/app_tropicaltraverse.cpp b/src/app_tropicaltraverse.cpp
+--- a/src/app_tropicaltraverse.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/app_tropicaltraverse.cpp	2026-04-03 01:30:43.935579062 +0800
+@@ -93,8 +93,8 @@
+ 	s.computeClosure(generators);
+ 	  s.createTrie();
+ 
+-	  log2 s.print(Stderr);
+-	log2 fprintf(Stderr,"\n");
++	  gfan_log2 s.print(Stderr);
++	gfan_log2 fprintf(Stderr,"\n");
+       }
+     if(optionTorusSymmetry.getValue() && !optionSymmetry.getValue())
+       {
+diff -ru a/src/bergman.cpp b/src/bergman.cpp
+--- a/src/bergman.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/bergman.cpp	2026-04-03 01:30:43.935579062 +0800
+@@ -79,15 +79,15 @@
+   //  fprintf(Stderr,"---------------------------------------------------------\n");
+ 
+ 
+-  log2  cerr<<"BBLABL";
++  gfan_log2  cerr<<"BBLABL";
+   for(IntegerVectorList::const_iterator i=rays.begin();i!=rays.end();i++)
+     {
+-      log2 cerr<<"1";
++      gfan_log2 cerr<<"1";
+       PolynomialSet g=idealGroebnerBasis;
+       g=GE_groebnerBasis(g,WeightReverseLexicographicTermOrder(*i),true,false);//Set to true?
+       //      buchberger(&g,WeightReverseLexicographicTermOrder(*i));
+       PolynomialSet cg=initialFormsAssumeMarked(g,*i);
+-      log2 cerr<<"2";
++      gfan_log2 cerr<<"2";
+  
+       bool inList=false;
+       for(BergmanFan::MaximalConeList::const_iterator j=bfan.cones.begin();j!=bfan.cones.end();j++)
+@@ -98,14 +98,14 @@
+ 	      break;
+ 	    }
+ 	}
+-      log2 cerr<<"3";
++      gfan_log2 cerr<<"3";
+       if(!inList)
+ 	{
+ 	  bfan.cones.push_back(BergmanFan::MaximalCone(cg,g,true,maximalConeLabel++));
+ 	}
+-      log2 cerr<<"4";
++      gfan_log2 cerr<<"4";
+     }
+-  log2 cerr<<"BBLAB  END";
++  gfan_log2 cerr<<"BBLAB  END";
+   //  AsciiPrinter temp(Stderr);
+   //  bfan.print(temp);
+   return bfan;
+@@ -631,7 +631,7 @@
+ 			     symmetry checks were algebraic and not
+ 			     geometric*/
+ 			  //  assert(i->idealGroebnerBasis.isMarked());
+-			  log2 cerr<<"8";
++			  gfan_log2 cerr<<"8";
+ 
+ 			  PolynomialSet g2(theRing);
+ 			  WeightTermOrder termOrder(termorderWeight(initialIdeal));
+@@ -639,14 +639,14 @@
+ 			  for(PolynomialSet::const_iterator j=i->idealGroebnerBasis.begin();j!=i->idealGroebnerBasis.end();j++)
+ 			    g2.push_back(divisionLift(*j, initialIdeal, current.idealGroebnerBasis, termOrder));
+ 			  assert(g2.isMarked());
+-			  log2 cerr<<"9";
++			  gfan_log2 cerr<<"9";
+ 			
+ 			 
+ 			  if(1)
+ 			    {
+-			      log2 cerr << "AUTOREDUCTION";
++			      gfan_log2 cerr << "AUTOREDUCTION";
+ 			      autoReduce(&g2,LexicographicTermOrder());
+-			      log2 cerr << "AUTOREDUCTION END"<<endl;
++			      gfan_log2 cerr << "AUTOREDUCTION END"<<endl;
+ 			    }
+ 			  else
+ 			    {
+@@ -655,17 +655,17 @@
+ 			      log0 cerr << "RESTRICTED AUTOREDUCTION END"<<endl;
+ 			    }
+ 			  ConeOrbit tempConeOrbit(*symmetryGroup,i->coneGroebnerBasis,g2,-1);
+-			  log2 cerr<<"0";
++			  gfan_log2 cerr<<"0";
+ 			  IntegerVector relIntFacetVector=tempConeOrbit.getStableRay();
+ 
+-			  log2 cerr<<"A";
++			  gfan_log2 cerr<<"A";
+ 
+ 			  int label=-1;
+ 			  IntegerVector labelPermutation;
+ 			  if(!active.containsAndMark(relIntFacetVector,relIntRidgeVector,&label,&labelPermutation))
+ 			    //			  if(!active.containsAndMark(i->coneGroebnerBasis,initialIdeal,&label,&labelPermutation))
+ 			    {
+-			  log2 cerr<<"B";
++			  gfan_log2 cerr<<"B";
+ 			      if(!ret.contains(i->coneGroebnerBasis))
+ 				{
+ 				  label=maximalConeLabel++;
+@@ -680,13 +680,13 @@
+ 				{
+ 				  assert(0);//Can this ever happen? REMOVE JAN 2009
+ 				}
+-			  log2 cerr<<"C";
++			  gfan_log2 cerr<<"C";
+ 			    }
+-			  log2 cerr<<"D";
++			  gfan_log2 cerr<<"D";
+ 			  ret.codimensionOneCones.back().incidenceList.push_back(label);
+-			  log2 cerr<<"E";
++			  gfan_log2 cerr<<"E";
+ 			  ret.codimensionOneCones.back().incidencePermutationList.push_back(labelPermutation);
+-			  log2 cerr<<"F";
++			  gfan_log2 cerr<<"F";
+ 			}
+ 		    }
+ 		    //		  else
+@@ -898,9 +898,9 @@
+       //PolyhedralCone c1(wallInequalities(i->idealGroebnerBasis),wallInequalities(i->coneGroebnerBasis));
+       //      PolyhedralCone c1(wallFlipableNormals(i->idealGroebnerBasis,false),wallInequalities(i->coneGroebnerBasis),n);
+       PolyhedralCone c1=i->theCone;
+-      log2 fprintf(Stderr,"Cononicalising...\n");
++      gfan_log2 fprintf(Stderr,"Cononicalising...\n");
+       c1.canonicalize();
+-      log2 fprintf(Stderr,"... done canonicalising...\n");
++      gfan_log2 fprintf(Stderr,"... done canonicalising...\n");
+       //      fprintf(Stderr,"a\n");
+       //      for(SymmetryGroup::ElementContainer::const_iterator j=symmetryGroup.elements.begin();j!=symmetryGroup.elements.end();j++)
+       //	{
+diff -ru a/src/breadthfirstsearch.cpp b/src/breadthfirstsearch.cpp
+--- a/src/breadthfirstsearch.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/breadthfirstsearch.cpp	2026-04-03 01:30:43.939579061 +0800
+@@ -259,7 +259,7 @@
+ 	//	fprintf(Stderr,"1b\n");
+       }
+ 
+-    log2 fprintf(Stderr,"numFixed = %i\n",numFixed);
++    gfan_log2 fprintf(Stderr,"numFixed = %i\n",numFixed);
+     return groupSize/numFixed;
+   }
+ };
+@@ -368,7 +368,7 @@
+ 	static int n;
+ 	n++;
+ 	if(!(n%10))
+-	  log2 fprintf(Stderr,"%i\n",n);
++	  gfan_log2 fprintf(Stderr,"%i\n",n);
+       }
+        log3  fprintf(Stderr,"Active set:\n");
+        log3 active.print(Stderr);
+@@ -484,7 +484,7 @@
+ 		    }
+ 		  else
+ 		    {
+-		      // log2 fprintf(Stderr,"-- marked\n");
++		      // gfan_log2 fprintf(Stderr,"-- marked\n");
+ 		    }
+ 		}
+ 	    }
+diff -ru a/src/buchberger.cpp b/src/buchberger.cpp
+--- a/src/buchberger.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/buchberger.cpp	2026-04-03 01:30:43.939579061 +0800
+@@ -68,7 +68,7 @@
+ 		return buchberger2(g, termOrder, allowSaturation);
+ 	//return buchbergerChain(g, termOrder, allowSaturation);
+ 	PolynomialRing theRing=g->getRing();
+-  //  log2 fprintf(Stderr,"ENTERING buchberger\n");
++  //  gfan_log2 fprintf(Stderr,"ENTERING buchberger\n");
+   TimerScope ts(&buchbergerTimer);
+   PolynomialSet sPolynomials(theRing);
+ 
+@@ -139,11 +139,11 @@
+     //  else
+     //	  pout<<"ZERO\n";
+     }
+-  //log2  fprintf(Stderr," buchberger minimize\n");
++  //gfan_log2  fprintf(Stderr," buchberger minimize\n");
+   minimize(g);
+-  //log2 fprintf(Stderr," buchberger autoreduce\n");
++  //gfan_log2 fprintf(Stderr," buchberger autoreduce\n");
+   autoReduce(g,termOrder);
+-  //log2 fprintf(Stderr,"LEAVING buchberger\n\n");
++  //gfan_log2 fprintf(Stderr,"LEAVING buchberger\n\n");
+ 
+   cerr<<"NumberOfReductions: "<<numberOfReductions<<std::endl;
+ }
+@@ -537,7 +537,7 @@
+           g->push_back(p);
+           G.push_back(p);
+           numberOfUsefulCriticalPairs++;
+-          log2
++          gfan_log2
+           {
+         	  static int t;
+         	  if(((++t)&=31)==0)
+@@ -641,7 +641,7 @@
+   int counter=0;
+   for(PolynomialSet::const_iterator i=g.begin();i!=g.end();i++)
+     {
+-    log2 fprintf(Stderr,"%i ",counter++);
++    gfan_log2 fprintf(Stderr,"%i ",counter++);
+     for(PolynomialSet::const_iterator j=i;j!=g.end();j++)
+       if(!relativelyPrime(i->getMarked().m.exponent,j->getMarked().m.exponent))
+ 	{
+diff -ru a/src/codimoneconnectedness.cpp b/src/codimoneconnectedness.cpp
+--- a/src/codimoneconnectedness.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/codimoneconnectedness.cpp	2026-04-03 01:30:43.943579062 +0800
+@@ -33,6 +33,6 @@
+       g.addEdge(facetIndex,nFacets+(lower_bound(allRidges2.begin(),allRidges2.end(),*j)-allRidges2.begin()));
+ 
+   int diameter=g.diameter();
+-  log2 cerr << "Diameter " << diameter << " nFacets " << nFacets << " nRidges " << nRidges << endl;
++  gfan_log2 cerr << "Diameter " << diameter << " nFacets " << nFacets << " nRidges " << nRidges << endl;
+   return diameter<nFacets+nRidges;
+ }
+diff -ru a/src/enumeration.cpp b/src/enumeration.cpp
+--- a/src/enumeration.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/enumeration.cpp	2026-04-03 01:30:43.943579062 +0800
+@@ -72,7 +72,7 @@
+       //      if(!(progressCounter&4095))
+ 	//      if(!(progressCounter&255))
+       if(!(progressCounter&15))
+-	log2 fprintf(Stderr,"Number of Gr\"obner Bases found %i\n",progressCounter);
++	gfan_log2 fprintf(Stderr,"Number of Gr\"obner Bases found %i\n",progressCounter);
+       fflush(Stderr);
+       step--;
+     }
+diff -ru a/src/ep_xfig.cpp b/src/ep_xfig.cpp
+--- a/src/ep_xfig.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/ep_xfig.cpp	2026-04-03 01:30:43.943579062 +0800
+@@ -75,12 +75,12 @@
+             }
+         }
+ 
+-  log2 xfig->printPolygon(p);
++  gfan_log2 xfig->printPolygon(p);
+   xfig->drawPolygon(p,0);
+ 
+   basisCounter++;
+ 
+-  log2 fprintf(Stderr,"basisCounter:%i\n",basisCounter);
++  gfan_log2 fprintf(Stderr,"basisCounter:%i\n",basisCounter);
+ 
+   return true;
+ }
+diff -ru a/src/field_rationals.cpp b/src/field_rationals.cpp
+--- a/src/field_rationals.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/field_rationals.cpp	2026-04-03 01:30:43.947579062 +0800
+@@ -403,7 +403,7 @@
+   list=this;
+   */
+ /*
+-  log2 fprintf(Stderr,"Initializing field Rationals\n");
++  gfan_log2 fprintf(Stderr,"Initializing field Rationals\n");
+ }
+ */
+ 				//FieldRationals Q;
+diff -ru a/src/gebauermoeller.h b/src/gebauermoeller.h
+--- a/src/gebauermoeller.h	2026-04-03 00:06:23.863809616 +0800
++++ b/src/gebauermoeller.h	2026-04-03 01:30:43.991579064 +0800
+@@ -215,7 +215,7 @@
+ 	}
+ 	~SPairContainerOptimized()
+ 	{
+-		log2{
++		gfan_log2{
+ 		std::cerr<<"numberOfPolys"<<numberOfPolys<<std::endl;
+ 		std::cerr<<"totalNumberOfPairs"<<totalNumberOfPairs<<std::endl;
+ 		std::cerr<<"numberOfSPolysToBeReduced"<<numberOfSPolysToBeReduced<<std::endl;
+diff -ru a/src/gfanlib_polyhedralfan.cpp b/src/gfanlib_polyhedralfan.cpp
+--- a/src/gfanlib_polyhedralfan.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/gfanlib_polyhedralfan.cpp	2026-04-03 01:30:43.947579062 +0800
+@@ -221,10 +221,10 @@
+ 
+   while(1)
+     {
+-      log2 debug<<"looping";
++      gfan_log2 debug<<"looping";
+       bool doLoop=false;
+       PolyhedralFan facets=ret.facetComplex();
+-      log2 debug<<"number of facets"<<facets.size()<<"\n";
++      gfan_log2 debug<<"number of facets"<<facets.size()<<"\n";
+       for(PolyhedralConeList::const_iterator i=facets.cones.begin();i!=facets.cones.end();i++)
+         if(!ret.contains(*i))
+           {
+@@ -561,7 +561,7 @@
+         static int t;
+ //        log1 fprintf(Stderr,"Adding faces of cone %i\n",t++);
+       }
+-//      log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
++//      gfan_log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
+ 
+       addFacesToSymmetricComplex(symCom,*i,i->getHalfSpaces(),generatorsOfLinealitySpace);
+     }
+@@ -706,11 +706,11 @@
+ 
+     PolyhedralFan ret(n);
+ 
+-    log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
++    gfan_log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
+     for(int i=0;i<cones.size();i++)
+       if(coneIndices==0 || coneIndices->count(i))
+         {
+-          log2 cerr<<"Expanding symmetries of cone"<<endl;
++          gfan_log2 cerr<<"Expanding symmetries of cone"<<endl;
+           {
+             IntegerVectorList coneRays;
+             for(list<int>::const_iterator j=cones[i].begin();j!=cones[i].end();j++)
+diff -ru a/src/gfanlib_symmetriccomplex.cpp b/src/gfanlib_symmetriccomplex.cpp
+--- a/src/gfanlib_symmetriccomplex.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/gfanlib_symmetriccomplex.cpp	2026-04-03 01:30:43.951579062 +0800
+@@ -563,7 +563,7 @@
+           static int t;
+   //        log1 fprintf(Stderr,"Adding faces of cone %i\n",t++);
+         }
+-  //      log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
++  //      gfan_log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
+ 
+         addFacesToSymmetricComplex(symCom,*i,i->getHalfSpaces(),generatorsOfLinealitySpace);
+       }
+diff -ru a/src/gfanlib_zfan.cpp b/src/gfanlib_zfan.cpp
+--- a/src/gfanlib_zfan.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/gfanlib_zfan.cpp	2026-04-03 01:30:43.951579062 +0800
+@@ -162,11 +162,11 @@
+ 
+         ZFan ret(sym);
+ 
+-//        log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
++//        gfan_log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
+         for(unsigned i=0;i<cones.size();i++)
+         //  if(coneIndices==0 || coneIndices->count(i))
+             {
+-//              log2 cerr<<"Expanding symmetries of cone"<<endl;
++//              gfan_log2 cerr<<"Expanding symmetries of cone"<<endl;
+               {
+                 ZMatrix coneRays(0,n);
+                 for(list<int>::const_iterator j=cones[i].begin();j!=cones[i].end();j++)
+diff -ru a/src/halfopencone.cpp b/src/halfopencone.cpp
+--- a/src/halfopencone.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/halfopencone.cpp	2026-04-03 01:30:43.955579063 +0800
+@@ -602,7 +602,7 @@
+       intersectionOld.print(&P);
+ 	*/
+       }
+-  log2 fprintf(Stderr,"Halfopen intersection completed.\n");
++  gfan_log2 fprintf(Stderr,"Halfopen intersection completed.\n");
+ }
+ 
+ PolyhedralFan tropicalHyperSurfaceIntersectionClosed(int dimension, PolynomialSet const &g, PolyhedralCone *restrictingCone, bool expand, bool saveResult, int intervalLow, int intervalHigh)
+@@ -1296,7 +1296,7 @@
+ 
+     if(index == fans.size())
+       {
+-	log2 fprintf(Stderr,"ADDING CONE\n");
++	gfan_log2 fprintf(Stderr,"ADDING CONE\n");
+ 	//ret.push_back(current);
+ 	processor.process(current,chosenFans,chosen);
+ 	numberOfUsefulCalls++;
+@@ -1339,7 +1339,7 @@
+ 
+ 	static int iterationNumber;
+ 	if(!(iterationNumber++ & 31))
+-	  log2
++	  gfan_log2
+ 	{
+ 	  fprintf(Stderr,"Iteration level:%i, Chosen fan:%i, Number of candidates:%i, Iteration Number:%i, Useful (%i/%i)=%f\n",index,bestIndex,bestNumberOfCandidates,iterationNumber,numberOfUsefulCalls,totalNumberOfCalls,float(numberOfUsefulCalls)/totalNumberOfCalls);
+ 	  fprintf(Stderr,"Chosen fans vector: ");
+@@ -1490,7 +1490,7 @@
+   }
+   bool closure()
+   {
+-    log2 cerr<<"computing closure"<<endl;
++    gfan_log2 cerr<<"computing closure"<<endl;
+     bool ret=false;
+     int a=0;
+     for(int f1=0;f1<fans.size();f1++)
+@@ -1532,8 +1532,8 @@
+ 		  }
+ 	      }
+       }
+-    log2 fprintf(Stderr,"%i FOR FREE\n",a);
+-    log2 cerr<<"done computing closure"<<endl;
++    gfan_log2 fprintf(Stderr,"%i FOR FREE\n",a);
++    gfan_log2 cerr<<"done computing closure"<<endl;
+     return ret;
+   }
+ 
+@@ -1607,8 +1607,8 @@
+ 		freeLPs++;
+ 	      }
+     //    table.print();
+-//    log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data2.table.numberOfSolvedLPs);
+-    log2 fprintf(Stderr,"Number of infeassible LPs discovered from higherdimensional cones: %i\n",freeLPs);
++//    gfan_log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data2.table.numberOfSolvedLPs);
++    gfan_log2 fprintf(Stderr,"Number of infeassible LPs discovered from higherdimensional cones: %i\n",freeLPs);
+   }
+ };
+ 
+@@ -1630,9 +1630,9 @@
+ 	HalfOpenConeList l,lf;
+ 	buildFanFromPolynomial(*i, &lf, &l, &(parents[I]),restrictingCone);
+ 
+-	log2 AsciiPrinter(Stderr).printVector(parents[I]);
++	gfan_log2 AsciiPrinter(Stderr).printVector(parents[I]);
+ 
+-	log2 fprintf(Stderr,"\n");
++	gfan_log2 fprintf(Stderr,"\n");
+ 
+ 	vector<HalfOpenCone> L;
+ 	for(HalfOpenConeList::const_iterator i=l.begin();i!=l.end();i++)
+@@ -1658,7 +1658,7 @@
+ //  data.table.print();//HERE
+   IntegerVectorList empty;
+   data.rek(0, HalfOpenCone(dimension,empty,empty,empty));
+-  log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
++  gfan_log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
+ }
+ 
+ 
+@@ -1861,7 +1861,7 @@
+     are gotten as the pull-back of the lower dimensional equations by
+     this normal form map.
+    */
+-  log2 cerr<<"Projecting Newton polytopes modulo the homogeneity space.";
++  gfan_log2 cerr<<"Projecting Newton polytopes modulo the homogeneity space.";
+ 
+   int N=G.getRing().getNumberOfVariables();
+   IntegerVectorList w=wallInequalities(G);
+@@ -1887,7 +1887,7 @@
+       restrictingCone=&restrictedConeNew;
+     }
+ 
+-  log2 cerr<<"Done projecting Newton polytopes modulo the homogeneity space.";
++  gfan_log2 cerr<<"Done projecting Newton polytopes modulo the homogeneity space.";
+   /*
+     Now do the computation with the new set of polynomials.
+    */
+@@ -1895,7 +1895,7 @@
+   /*
+     Here follows restriction to subspace cut out by the binomials.
+    */
+-  log2 cerr<<"Restricting to subspace determined by binomials and computing tropical hypersurfaces.";
++  gfan_log2 cerr<<"Restricting to subspace determined by binomials and computing tropical hypersurfaces.";
+ 
+   int n=g.getRing().getNumberOfVariables();
+   IntegerVectorList equations;
+@@ -1937,12 +1937,12 @@
+   for(PolynomialSet::const_iterator i=g.begin();i!=g.end();i++)
+     if(i->numberOfTerms()!=2)
+       {
+-	log2 cerr << I;
++	gfan_log2 cerr << I;
+ 	HalfOpenConeList l,lf;
+-	log2 cerr<< "Building fan"<<endl;
++	gfan_log2 cerr<< "Building fan"<<endl;
+ 	buildFanFromPolynomial(*i, &lf, &l, &(parents[I]),restrictingCone);
+-	log2 cerr<< "Number of cones:" << lf.size()<<","<< l.size()<<endl;
+-	log2 cerr<< "rewriting"<<endl;
++	gfan_log2 cerr<< "Number of cones:" << lf.size()<<","<< l.size()<<endl;
++	gfan_log2 cerr<< "rewriting"<<endl;
+ 
+ 	vector<HalfOpenCone> L;
+ 	for(HalfOpenConeList::const_iterator i=l.begin();i!=l.end();i++)
+@@ -1953,10 +1953,10 @@
+ 
+ 	fullDimFanList.push_back(F);
+ 	coDimOneFanList.push_back(L);
+-	log2 cerr<< "Done Building fan"<<endl;
++	gfan_log2 cerr<< "Done Building fan"<<endl;
+ 	I++;
+       }
+-  log2 cerr<<"Done computing tropical hypersurfaces.";
++  gfan_log2 cerr<<"Done computing tropical hypersurfaces.";
+ 
+   /* Now we must create a new HalfOpenConeProcessor and tell it how to expand a cone.
+      We must insert the pivot columns from A and add in the equtions gotten from the binomials.
+@@ -1974,12 +1974,12 @@
+ 
+ 
+   IntegerVectorList empty;
+-  log2 cerr<<"Doing intersection.";
++  gfan_log2 cerr<<"Doing intersection.";
+   if(intervalHigh!=-1)data.setInterval(intervalLow,intervalHigh);
+   data.rek(0, HalfOpenCone(nonPivots.size(),empty,empty,empty));
+-  log2 cerr<<"Done doing intersection.";
++  gfan_log2 cerr<<"Done doing intersection.";
+   //  data.rek(0, HalfOpenCone(dimension,empty,empty,empty));
+-  //  log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
++  //  gfan_log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
+ 
+   /*  HalfOpenConeList ret;
+ 
+@@ -2151,7 +2151,7 @@
+   IntegerVectorList empty;
+   data.rek(0, HalfOpenCone(g.getRing().getNumberOfVariables(),empty,empty,empty));
+ 
+-  log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
++  gfan_log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
+ 
+   if(maximalSeen)*maximalSeen=p.getMaximalDimensionFound();
+ 
+@@ -2185,7 +2185,7 @@
+   IntegerVectorList empty;
+   data.rek(0, HalfOpenCone(/*g.getRing().getNumberOfVariables()*/d,empty,empty,empty));
+ 
+-  log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
++  gfan_log2 fprintf(Stderr,"LPs solved:%i for relation table\n",data.table.numberOfSolvedLPs);
+ 
+   if(maximalSeen)*maximalSeen=p.getMaximalDimensionFound();
+ 
+diff -ru a/src/linalg.cpp b/src/linalg.cpp
+--- a/src/linalg.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/linalg.cpp	2026-04-03 01:30:43.955579063 +0800
+@@ -885,7 +885,7 @@
+ 		return ret;
+ 	}
+ 	fallback:
+-	log2 debug << "LINALG FALLBACK\n";
++	gfan_log2 debug << "LINALG FALLBACK\n";
+ 
+ 
+   FieldMatrix m2=integerMatrixToFieldMatrix(m,Q);
+diff -ru a/src/log.h b/src/log.h
+--- a/src/log.h	2026-04-03 00:06:23.863809616 +0800
++++ b/src/log.h	2026-04-03 01:30:43.903579060 +0800
+@@ -14,7 +14,7 @@
+ #define log0 if(logLevel>=0)
+ 
+ #define log1 if(logLevel>=1)
+-#define log2 if(logLevel>=2)
++#define gfan_log2 if(logLevel>=2)
+ #define log3 if(logLevel>=3)
+ 
+ #endif
+diff -ru a/src/lp_soplexcdd.cpp b/src/lp_soplexcdd.cpp
+--- a/src/lp_soplexcdd.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/lp_soplexcdd.cpp	2026-04-03 01:30:43.959579062 +0800
+@@ -536,7 +536,7 @@
+ 	     debug<<"\n";
+ 	     D(s);
+ */
+-	     log2 fprintf(Stderr,"Solution failed (Type2).\n");
++	     gfan_log2 fprintf(Stderr,"Solution failed (Type2).\n");
+ 
+ 	     /*	     for(int i=0;i<work.nCols();i++)
+ 	       {
+@@ -578,7 +578,7 @@
+ 		 return false;
+ 	       }
+ 	     
+-	       log2 fprintf(Stderr,"Certificate failed (Type2).\n");
++	       gfan_log2 fprintf(Stderr,"Certificate failed (Type2).\n");
+ 	       /* std::cerr<< work;
+ 	      std::cerr<< farkasx;
+ 	     AsciiPrinter(Stderr).printVector(c);
+diff -ru a/src/padic.cpp b/src/padic.cpp
+--- a/src/padic.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/padic.cpp	2026-04-03 01:30:43.959579062 +0800
+@@ -406,14 +406,14 @@
+   for(PolynomialSet::const_iterator i=g.begin();i!=g.end();i++)
+     for(PolynomialSet::const_iterator j=g.begin();j!=i;j++)
+       {
+-log2        debug<<"checking s poly\n"<<*i<<"("<<ST(*i,prime,omega,tieBreaker)<<")"<<"\n"<<*j<<"("<<ST(*j,prime,omega,tieBreaker)<<")"<<"\n";
++gfan_log2        debug<<"checking s poly\n"<<*i<<"("<<ST(*i,prime,omega,tieBreaker)<<")"<<"\n"<<*j<<"("<<ST(*j,prime,omega,tieBreaker)<<")"<<"\n";
+         Polynomial f=SPolynomial(*i,*j,prime,omega,tieBreaker);
+ //        debug<<"S="<<f<<"\n";
+ // Enable the relatively prime criterion by uncommenting this following:
+ #if 1
+         if(relativelyPrime(ST(*i,prime,omega,tieBreaker).m.exponent,ST(*j,prime,omega,tieBreaker).m.exponent))
+           {
+-log2            debug<<"SKIPPING\n";
++gfan_log2            debug<<"SKIPPING\n";
+           }
+         else
+ #endif
+@@ -424,7 +424,7 @@
+         f=longDivision(f,g,prime,omega,tieBreaker,H,u);
+         if(!f.isZero())
+           {
+-log2            debug<<"Adding:"<<f<<"\n";
++gfan_log2            debug<<"Adding:"<<f<<"\n";
+             g.push_back(f);
+           }
+         }
+diff -ru a/src/polyhedralcone.cpp b/src/polyhedralcone.cpp
+--- a/src/polyhedralcone.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/polyhedralcone.cpp	2026-04-03 01:30:43.963579063 +0800
+@@ -879,7 +879,7 @@
+ 	    ret.push_back(u);
+ 	  else
+ 	    {
+-	      log2 fprintf(Stderr,"Remember to fix cdd double description interface\n");
++	      gfan_log2 fprintf(Stderr,"Remember to fix cdd double description interface\n");
+ 	    }
+ 	}
+     }
+diff -ru a/src/polyhedralfan.cpp b/src/polyhedralfan.cpp
+--- a/src/polyhedralfan.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/polyhedralfan.cpp	2026-04-03 01:30:43.963579063 +0800
+@@ -400,10 +400,10 @@
+ 
+   while(1)
+     {
+-      log2 debug<<"looping";
++      gfan_log2 debug<<"looping";
+       bool doLoop=false;
+       PolyhedralFan facets=ret.facetComplex();
+-      log2 debug<<"number of facets"<<facets.size()<<"\n";
++      gfan_log2 debug<<"number of facets"<<facets.size()<<"\n";
+       for(PolyhedralConeList::const_iterator i=facets.cones.begin();i!=facets.cones.end();i++)
+ 	if(!ret.contains(*i))
+ 	  {
+@@ -1232,7 +1232,7 @@
+ 
+       if(!c.contains(theCone))
+ 	{
+-	  log2
++	  gfan_log2
+ 	  {
+ 	    static int t;
+ 	    if((t&1023)==0)
+@@ -1317,7 +1317,7 @@
+ 		static int t;
+ 		log1 fprintf(Stderr,"Adding faces of cone %i\n",t++);
+ 	      }
+-	      log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
++	      gfan_log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
+ 
+ 	      addFacesToSymmetricComplex(symCom,*i,i->getHalfSpaces(),generatorsOfLinealitySpace);
+ 	    }
+@@ -1387,7 +1387,7 @@
+ 	static int t;
+ 	log1 fprintf(Stderr,"Adding faces of cone %i\n",t++);
+       }
+-      log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
++      gfan_log2 fprintf(Stderr,"Dim: %i\n",i->dimension());
+ 
+       addFacesToSymmetricComplex(symCom,*i,i->getHalfSpaces(),generatorsOfLinealitySpace);
+     }
+@@ -1565,11 +1565,11 @@
+ 
+     PolyhedralFan ret(n);
+ 
+-    log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
++    gfan_log2 cerr<< "Number of orbits to expand "<<cones.size()<<endl;
+     for(int i=0;i<cones.size();i++)
+       if(coneIndices==0 || coneIndices->count(i))
+ 	{
+-	  log2 cerr<<"Expanding symmetries of cone"<<endl;
++	  gfan_log2 cerr<<"Expanding symmetries of cone"<<endl;
+ 	  /*	  for(SymmetryGroup::ElementContainer::const_iterator perm=sym->elements.begin();perm!=sym->elements.end();perm++)
+ 	    {
+ 	      IntegerVectorList coneRays;
+@@ -1851,7 +1851,7 @@
+ 
+   for(PolyhedralConeList::const_iterator i=cones.begin();i!=cones.end();i++)
+     {
+-      log2 cerr<<"Computing ridges of facet." << endl;
++      gfan_log2 cerr<<"Computing ridges of facet." << endl;
+       PolyhedralFan ridges=facetsOfCone(*i);
+       IntegerVectorList interiorPoints;
+       for(PolyhedralConeList::const_iterator j=ridges.cones.begin();j!=ridges.cones.end();j++)
+diff -ru a/src/reversesearch.cpp b/src/reversesearch.cpp
+--- a/src/reversesearch.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/reversesearch.cpp	2026-04-03 01:30:43.967579063 +0800
+@@ -65,7 +65,7 @@
+     static int n;
+     n++;
+     if(!(n%10))
+-      log2 fprintf(Stderr,"%i %i\n",n,depth);
++      gfan_log2 fprintf(Stderr,"%i %i\n",n,depth);
+   }
+ 
+   int s=1;
+@@ -144,17 +144,17 @@
+ 
+ PolynomialSet ReverseSearch::findRoot(PolynomialSet groebnerBasis)
+ {
+-  log2 fprintf(Stderr,"Computing root\n");
+-  log2 buchberger(&groebnerBasis,termOrder);
++  gfan_log2 fprintf(Stderr,"Computing root\n");
++  gfan_log2 buchberger(&groebnerBasis,termOrder);
+ 
+   IntegerVector edge;
+   while(computeSearchEdge(groebnerBasis,&edge))
+     {
+-      log2 AsciiPrinter(Stderr).printVector(edge);
++      gfan_log2 AsciiPrinter(Stderr).printVector(edge);
+       groebnerBasis=flip(groebnerBasis,edge);
+     }
+ 
+-  log2 fprintf(Stderr,"Done computing root\n");
++  gfan_log2 fprintf(Stderr,"Done computing root\n");
+   return groebnerBasis;
+ }
+ 
+diff -ru a/src/singular.cpp b/src/singular.cpp
+--- a/src/singular.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/singular.cpp	2026-04-03 01:30:43.967579063 +0800
+@@ -115,10 +115,10 @@
+         test|=(Sy_bit(OPT_REDSB)|Sy_bit(OPT_REDTAIL)|Sy_bit(OPT_INTSTRATEGY));
+         test|=(Sy_bit(OPT_REDTHROUGH));
+ 
+-	log2 cerr<<"calling singular\n";
++	gfan_log2 cerr<<"calling singular\n";
+ 	//  debug<<"test"<<int(test)<<"\n";
+ 	ideal j=kStd(i,NULL,testHomog,NULL);
+-	log2 cerr<<"returning from singular\n";
++	gfan_log2 cerr<<"returning from singular\n";
+ 
+ 	idDelete(&i);
+ 	ret=fromSingularIdeal(ret.getRing(),j,R);
+@@ -132,7 +132,7 @@
+ 		{
+ 			/*
+ 			 * This test fails on the example
+-			 * gfan _tropicaltraverse --symmetry --log2 <hannah.cone
++			 * gfan _tropicaltraverse --symmetry --gfan_log2 <hannah.cone
+ 			 * The monomial d^3*e*f^3*g^8*h^4*i^2 appears as a leading term, but also in a tail.
+ 			 */
+ 
+@@ -175,10 +175,10 @@
+     ideal i=singularPolynomialSet(idealGenerators);
+     test|=(Sy_bit(OPT_REDSB)|Sy_bit(OPT_REDTAIL)|Sy_bit(OPT_INTSTRATEGY));
+ 
+-    log2 cerr<<"calling singular\n";
++    gfan_log2 cerr<<"calling singular\n";
+     ideal j=kStd(i,NULL,testHomog,NULL);
+ 	//    ideal j=kInterRed(i);
+-    log2 cerr<<"returning from singular\n";
++    gfan_log2 cerr<<"returning from singular\n";
+ 
+     idDelete(&i);
+     ret=fromSingularIdeal(ret.getRing(),j,R);
+diff -ru a/src/symmetriccomplex.cpp b/src/symmetriccomplex.cpp
+--- a/src/symmetriccomplex.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/symmetriccomplex.cpp	2026-04-03 01:30:43.971579063 +0800
+@@ -509,7 +509,7 @@
+   int dim=-1;
+   for(ConeContainer::const_iterator i=cones.begin();i!=cones.end();i++)
+     {
+-      log2{static int a;if(!((a++)&63))fprintf(Stderr,"%i\n",a);}//log0
++      gfan_log2{static int a;if(!((a++)&63))fprintf(Stderr,"%i\n",a);}//log0
+     if(isMaximal(*i))
+       {
+ 	int dim2=i->dimension;
+diff -ru a/src/symmetry.cpp b/src/symmetry.cpp
+--- a/src/symmetry.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/symmetry.cpp	2026-04-03 01:30:43.971579063 +0800
+@@ -631,7 +631,7 @@
+ 	int I=0;
+ 	for(ElementContainer::const_iterator i=elements.begin();i!=elements.end();i++,I++)
+ 		trie->insert(*i,I);
+-	log2 debug<<"Number of elements";log2 debug.printInteger(trie->size());log2 debug<<"\n";
++	gfan_log2 debug<<"Number of elements";gfan_log2 debug.printInteger(trie->size());gfan_log2 debug<<"\n";
+ 	log1 debug<<"Done creating symmetry trie.\n";
+ 
+ 	if(0)
+diff -ru a/src/traverser_stableintersection.cpp b/src/traverser_stableintersection.cpp
+--- a/src/traverser_stableintersection.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/traverser_stableintersection.cpp	2026-04-03 01:30:43.975579064 +0800
+@@ -62,7 +62,7 @@
+ 
+ 	IntegerVectorList rays1=theLink.getRaysInPrintingOrder(0);
+ 
+-	log2 {
++	gfan_log2 {
+ 	  cerr<<"Ray candidates:"<<endl;
+ 	  AsciiPrinter(Stderr)<<rays1;
+ 	}
+@@ -80,7 +80,7 @@
+ 			rays2.push_back(ray.getUniquePoint());
+ 			//			rays2.push_back(*i);
+ 			}
+-	log2{
++	gfan_log2{
+ 	cerr<<"True rays:"<<endl;
+ 	AsciiPrinter(Stderr)<<rays2;
+ 	}
+diff -ru a/src/traverser_tropical.cpp b/src/traverser_tropical.cpp
+--- a/src/traverser_tropical.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/traverser_tropical.cpp	2026-04-03 01:30:43.975579064 +0800
+@@ -43,12 +43,12 @@
+ 
+ void TropicalTraverser::changeCone(IntegerVector const &ridgeVector, IntegerVector const &rayVector)
+ {
+-log2 {
++gfan_log2 {
+ 	debug << "Interior point:"<<theCone.getUniquePoint()<<"\n";
+ 	debug << "Ridge:"<<ridgeVector<<"Ray:"<<rayVector<<"\n";
+ }
+ 	assert(idealGroebnerBasis.containsInClosedGroebnerCone(ridgeVector));
+-	  log2 cerr<<endl<<"Changing cone"<<endl;
++	  gfan_log2 cerr<<endl<<"Changing cone"<<endl;
+ 
+ 	//  assert(!containsMonomial(coneGroebnerBasis));
+ 
+@@ -61,7 +61,7 @@
+ 	  WeightReverseLexicographicTermOrder T(rayVector);
+ 
+ 	  //  P<<ridgeIdeal;
+-	  log2 cerr<<"Computing initial Groebner basis"<<endl;
++	  gfan_log2 cerr<<"Computing initial Groebner basis"<<endl;
+ 	  //  buchberger(&ridgeIdeal,T);
+ 
+ 	  ridgeIdeal=GE_groebnerBasis(ridgeIdeal,T,true,false);//Set to true?
+@@ -72,7 +72,7 @@
+ 	  //  WeightTermOrder termOrder(termorderWeight(ridgeIdeal));
+ 	  WeightTermOrder termOrder(termorderWeight(ridgeIdealOld));
+ 
+-	  log2 cerr<<"Lifting"<<endl;
++	  gfan_log2 cerr<<"Lifting"<<endl;
+ 	  PolynomialSet temp=ridgeIdealOld;
+ 	  temp.markAndScale(T);
+ 	  temp=temp.markedTermIdeal();
+@@ -92,7 +92,7 @@
+ 	    }
+ 	  assert(g2.isMarked());
+ 	  //printMarkedTermIdeal(g2,"g2");
+-	  log2 cerr<<"Autoreducing"<<endl;
++	  gfan_log2 cerr<<"Autoreducing"<<endl;
+ 
+ 	  //  autoReduce(&g2,LexicographicTermOrder());
+ 	  //PolynomialSet g2Old=g2;
+@@ -121,7 +121,7 @@
+ 	  assert(idealGroebnerBasis.size()==oldSize);
+ 	  //  idealGroebnerBasis=g2;
+ //	  assert(!containsMonomial(coneGroebnerBasis));
+-	  log2 cerr<<"Done changing cone"<<endl<<endl;
++	  gfan_log2 cerr<<"Done changing cone"<<endl<<endl;
+ 
+ 	  //  P<<coneGroebnerBasis;
+ 	  //  P<<idealGroebnerBasis;
+@@ -140,7 +140,7 @@
+ 	    P<<coneGroebnerBasis;
+ 	    }*/
+ 
+-	  log2 cerr << "Number of terms in new basis: "<< g2.totalNumberOfTerms()<<endl;
++	  gfan_log2 cerr << "Number of terms in new basis: "<< g2.totalNumberOfTerms()<<endl;
+ 
+ 
+ 	updatePolyhedralCone();
+@@ -156,10 +156,10 @@
+ 
+ 	//P<<tempIdeal;
+ 
+-//	log2 D(tempIdeal);
++//	gfan_log2 D(tempIdeal);
+ //	tempIdeal=saturatedIdeal(tempIdeal);//TODO: figure out if it is an advantage to saturate the ideal
+ 	/* That seems not to be the case. For example on Grassmann 3_8. Here most time would be spent saturating.*/
+-//	log2 D(tempIdeal);
++//	gfan_log2 D(tempIdeal);
+ 
+ 	IntegerVectorList rays;
+ 
+diff -ru a/src/triangulation2.h b/src/triangulation2.h
+--- a/src/triangulation2.h	2026-04-03 00:06:23.863809616 +0800
++++ b/src/triangulation2.h	2026-04-03 01:30:43.991579064 +0800
+@@ -602,7 +602,7 @@
+ /*    void flip(IntegerVector const &normal)
+     {
+       AsciiPrinter P(Stderr);
+-      log2 print(P);
++      gfan_log2 print(P);
+       //log0 P.printVector(normal);
+       int n=normal.size();
+       //      IntegerVectorList l=wallRemoveScaledInequalities(inequalities());// This is not needed - one circuit should be enough
+@@ -610,7 +610,7 @@
+       for(IntegerVectorList::const_iterator i=l.begin();i!=l.end();i++)
+ 	if(dependent(*i,normal))
+ 	  {
+-	    log2 AsciiPrinter(Stderr).printVector(*i);
++	    gfan_log2 AsciiPrinter(Stderr).printVector(*i);
+ 	    for(int k=0;k<normal.size();k++)
+ 	      if((*i)[k]<0)
+ 		{
+diff -ru a/src/tropical.cpp b/src/tropical.cpp
+--- a/src/tropical.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/tropical.cpp	2026-04-03 01:30:43.979579063 +0800
+@@ -241,7 +241,7 @@
+ 
+ bool containsMonomial(PolynomialSet const &ideal)
+ {
+-	log2 debug<<"containsMonomial() called on input ideal:\n"<<ideal;
++	gfan_log2 debug<<"containsMonomial() called on input ideal:\n"<<ideal;
+ 
+ //	if(ideal.empty())return false;
+ 
+diff -ru a/src/tropical2.cpp b/src/tropical2.cpp
+--- a/src/tropical2.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/tropical2.cpp	2026-04-03 01:30:43.979579063 +0800
+@@ -305,7 +305,7 @@
+ PolyhedralFan tropicalPrincipalIntersection(int n, PolynomialSet const &g, int linealitySpaceDimension)
+ {
+   //return tropicalHyperSurfaceIntersection(n, g);////////////////////////////////////////
+-  log2 fprintf(Stderr,"Intersecting\n");
++  gfan_log2 fprintf(Stderr,"Intersecting\n");
+   log3 AsciiPrinter(Stderr).printPolynomialSet(g);
+ 
+   TimerScope ts(&tropicalPrincipalIntersectionTimer);
+@@ -315,7 +315,7 @@
+     {
+       ret=refinement(ret,PolyhedralFan::bergmanOfPrincipalIdeal(*i),linealitySpaceDimension,true);
+     }
+-  log2 fprintf(Stderr,"Done intersecting\n");
++  gfan_log2 fprintf(Stderr,"Done intersecting\n");
+   return ret;
+ }
+ 
+@@ -326,12 +326,12 @@
+   for(IntegerVectorList::const_iterator i=l.begin();i!=l.end();i++)
+     {
+       WeightReverseLexicographicTermOrder t(*i);
+-      log2 fprintf(Stderr,"Computing Gr\"obner basis with respect to:");
+-      log2 AsciiPrinter(Stderr).printVector(*i);
+-      log2 fprintf(Stderr,"\n");
++      gfan_log2 fprintf(Stderr,"Computing Gr\"obner basis with respect to:");
++      gfan_log2 AsciiPrinter(Stderr).printVector(*i);
++      gfan_log2 fprintf(Stderr,"\n");
+       PolynomialSet h2=groebnerBasis;
+       buchberger(&h2,t);
+-      log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
++      gfan_log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
+ 
+       log3 AsciiPrinter(Stderr).printPolynomialSet(h2);
+       PolynomialSet wall=initialFormsAssumeMarked(h2,*i);
+@@ -483,14 +483,14 @@
+   #endif
+ 
+   {
+-    //log2
++    //gfan_log2
+     fprintf(Stderr,"Computing extreme rays.\n");
+     //IntegerVectorList a;
+     PolyhedralCone p=coneFromMarkedBasis(groebnerBasis);
+     //PolyhedralCone p=PolyhedralCone(wallInequalities(groebnerBasis),a);
+     IntegerVectorList extreme=p.extremeRays();
+-    log2 fprintf(Stderr,"Extreme rays of Groebner cone:\n");
+-    log2 AsciiPrinter(Stderr).printVectorList(extreme);
++    gfan_log2 fprintf(Stderr,"Extreme rays of Groebner cone:\n");
++    gfan_log2 AsciiPrinter(Stderr).printVectorList(extreme);
+ 
+     bool result;
+     PolynomialSet r=checkList(extreme,groebnerBasis,fullNeighbourBasis,h,result, onlyCheckRays);
+@@ -536,11 +536,11 @@
+   for(IntegerVectorList::const_iterator i=l.begin();i!=l.end();i++)
+     {
+       WeightReverseLexicographicTermOrder t(*i);
+-      log2 fprintf(Stderr,"Taking initial forms with respect to:");
+-      log2 AsciiPrinter(Stderr).printVector(*i);
+-      log2 fprintf(Stderr,"\n");
++      gfan_log2 fprintf(Stderr,"Taking initial forms with respect to:");
++      gfan_log2 AsciiPrinter(Stderr).printVector(*i);
++      gfan_log2 fprintf(Stderr,"\n");
+       PolynomialSet h2=groebnerBasis;
+-      log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
++      gfan_log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
+ 
+       log3 AsciiPrinter(Stderr).printPolynomialSet(h2);
+       PolynomialSet wall=initialForms(h2,*i);
+@@ -592,13 +592,13 @@
+     }
+ 
+   {
+-    log2 fprintf(Stderr,"Computing extreme rays.\n");
++    gfan_log2 fprintf(Stderr,"Computing extreme rays.\n");
+     //IntegerVectorList a;
+     PolyhedralCone p=coneFromMarkedBasis(groebnerBasis);
+     //PolyhedralCone p=PolyhedralCone(wallInequalities(groebnerBasis),a);
+     IntegerVectorList extreme=p.extremeRays();
+-    log2 fprintf(Stderr,"Extreme rays of Groebner cone:\n");
+-    log2 AsciiPrinter(Stderr).printVectorList(extreme);
++    gfan_log2 fprintf(Stderr,"Extreme rays of Groebner cone:\n");
++    gfan_log2 AsciiPrinter(Stderr).printVectorList(extreme);
+ 
+     bool result;
+     PolynomialSet r=checkListStably(extreme,groebnerBasis,fullNeighbourBasis,h,result, onlyCheckRays);
+diff -ru a/src/tropical_weildivisor.cpp b/src/tropical_weildivisor.cpp
+--- a/src/tropical_weildivisor.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/tropical_weildivisor.cpp	2026-04-03 01:30:43.983579064 +0800
+@@ -53,7 +53,7 @@
+ 
+ 	  AsciiPrinter P(Stderr);
+ 
+-	  log2 P<<v<<v<<"\n";
++	  gfan_log2 P<<v<<v<<"\n";
+ 
+ 	  int multiplicity=0;
+ 	  IntegerVector evaluationVector(n);
+diff -ru a/src/tropicalbasis.cpp b/src/tropicalbasis.cpp
+--- a/src/tropicalbasis.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/tropicalbasis.cpp	2026-04-03 01:30:43.983579064 +0800
+@@ -118,10 +118,10 @@
+ 	PolynomialSet originalG=g;
+ //  bool prebasis=true;
+ //  debug<<"PREBASIS="<<prebasis<<"\n";
+-  log2 debug<<"TropicalBasis begin\n";
+-	log2 debug<<g;
++  gfan_log2 debug<<"TropicalBasis begin\n";
++	gfan_log2 debug<<g;
+ 	int homog=linealitySpaceDimension;
+-	log2 D(linealitySpaceDimension);
++	gfan_log2 D(linealitySpaceDimension);
+   assert(homog>0 || n==0);
+   TimerScope ts(&iterativeTropicalBasisTimer);
+   PolyhedralFan f(n);
+@@ -148,7 +148,7 @@
+ 
+ 	  if(containsNoMonomialCache.count(relativeInteriorPoint)>0)
+ 	    {
+-	      log2 fprintf(Stderr,"Weight vector found in cache.... contains no monomial.\n");
++	      gfan_log2 fprintf(Stderr,"Weight vector found in cache.... contains no monomial.\n");
+ 	    }
+ 	  else
+ 	    {
+@@ -163,9 +163,9 @@
+ 	            }
+ 	        }*/
+ 	      WeightReverseLexicographicTermOrder t(relativeInteriorPoint);
+-	      log2 fprintf(Stderr,"Computing Gr\"obner basis with respect to:");
+-	      log2 AsciiPrinter(Stderr).printVector(relativeInteriorPoint);
+-	      log2 fprintf(Stderr,"\n");
++	      gfan_log2 fprintf(Stderr,"Computing Gr\"obner basis with respect to:");
++	      gfan_log2 AsciiPrinter(Stderr).printVector(relativeInteriorPoint);
++	      gfan_log2 fprintf(Stderr,"\n");
+ 	      PolynomialSet h2=originalG;//g;//<------------------- Using the original set here speeds up things a lot in the starting cone via stable intersections algorithm
+   //            debug<<"g"<<g;
+ 
+@@ -178,7 +178,7 @@
+ 	     // buchberger(&h2,t);
+ 	      h2=GE_groebnerBasis(h2,t,true/*autoreduce*/,true/*saturate*/);
+         //      debug<<"h2"<<h2;
+-	      log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
++	      gfan_log2 fprintf(Stderr,"Done computing Gr\"obner basis.\n");
+ 
+ 	  //    debug<<h2;
+ //	      log3 AsciiPrinter(Stderr).printPolynomialSet(h2);
+@@ -187,17 +187,17 @@
+ 
+ 	      if(containsMonomial(wall))
+ 		{
+-		  log2 fprintf(Stderr,"Initial ideal contains a monomial.\n");
++		  gfan_log2 fprintf(Stderr,"Initial ideal contains a monomial.\n");
+ 		  Polynomial m(computeTermInIdeal(wall));
+-		  log2 fprintf(Stderr,"Done computing term in ideal\n");
++		  gfan_log2 fprintf(Stderr,"Done computing term in ideal\n");
+ 
+ //		  Polynomial temp=m-division(m,h2,LexicographicTermOrder());
+ 		  Polynomial temp=m-division(m,h2,t);
+ 		  g.push_back(temp);
+ 
+-		  log2 fprintf(Stderr,"Adding element to basis:\n");
+-		  log2 AsciiPrinter(Stderr).printPolynomial(temp);
+-		  log2 fprintf(Stderr,"\n");
++		  gfan_log2 fprintf(Stderr,"Adding element to basis:\n");
++		  gfan_log2 AsciiPrinter(Stderr).printPolynomial(temp);
++		  gfan_log2 fprintf(Stderr,"\n");
+ 
+ 		  *intersectionFan=refinement(*intersectionFan,PolyhedralFan::bergmanOfPrincipalIdeal(temp),linealitySpaceDimension,true);
+ 		  break;
+@@ -207,7 +207,7 @@
+ 		  if(i->dimension()<=1+homog)
+ 		    //if(!containsMonomial(wall) && i->dimension()<=1+homog)//line for testing perturbation code
+ 		    {
+-		      log2 fprintf(Stderr,"Initial ideal contains no monomial... caching weight vector.\n");
++		      gfan_log2 fprintf(Stderr,"Initial ideal contains no monomial... caching weight vector.\n");
+ 		      containsNoMonomialCache.insert(relativeInteriorPoint);
+ 		    }
+ 		  else
+@@ -227,10 +227,10 @@
+ 		      dual.canonicalize();
+ 		      IntegerVectorList basis=dual.getEquations();
+ 		      PolynomialSet witnessLiftBasis=h2;//basis with respect to relativeInteriorPoint
+-		      log2 debug<<"basis"<<basis<<"\n";
++		      gfan_log2 debug<<"basis"<<basis<<"\n";
+ 		      for(IntegerVectorList::const_iterator j=basis.begin();j!=basis.end();j++)
+ 			{
+-			  log2 debug<<"wall"<<wall<<"\n";
++			  gfan_log2 debug<<"wall"<<wall<<"\n";
+ 			  WeightReverseLexicographicTermOrder t(*j);
+ 			  PolynomialSet h3=wall;
+ //			  buchberger(&h3,t);
+@@ -238,7 +238,7 @@
+ 			  wall=initialFormsAssumeMarked(h3,*j);
+ 			  witnessLiftBasis=liftBasis(h3,witnessLiftBasis);
+ 			}
+-                      log2 debug<<"wall"<<wall<<"\n";
++                      gfan_log2 debug<<"wall"<<wall<<"\n";
+ 		      if(containsMonomial(wall))
+ 			{
+ 			  Polynomial m(computeTermInIdeal(wall));
+@@ -259,8 +259,8 @@
+       if(i==intersectionFan->conesEnd())break;
+     }
+ 
+-  log2 debug<<"TropicalBasis end\n";
+-  log2 cerr <<"RETURNING";
++  gfan_log2 debug<<"TropicalBasis end\n";
++  gfan_log2 cerr <<"RETURNING";
+   return g;
+ }
+ 
+diff -ru a/src/tropicalcurve.cpp b/src/tropicalcurve.cpp
+--- a/src/tropicalcurve.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/tropicalcurve.cpp	2026-04-03 01:30:43.983579064 +0800
+@@ -50,7 +50,7 @@
+ 	int stat_isInTropicalVariety=0;
+ 	int stat_finiteLiftEasy=0;
+ 	int stat_finiteLiftHard=0;
+-	log2 debug<<"tropicalCurve on:"<<I.getRing()<<I<<"\n";
++	gfan_log2 debug<<"tropicalCurve on:"<<I.getRing()<<I<<"\n";
+ 
+ 
+ 
+@@ -78,8 +78,8 @@
+ //#if 0
+ //	for(i=0;i<n;i++)
+ 	{
+-		log2 debug<<"Doing elimination\n";
+-		log2 debug<<I<<"\n";
++		gfan_log2 debug<<"Doing elimination\n";
++		gfan_log2 debug<<I<<"\n";
+ 		list<int> chosenVariables;
+ 		for(int j=0;j<n;j++)if(j!=i)chosenVariables.push_back(j);
+ 
+@@ -107,7 +107,7 @@
+ #endif
+ 
+ 
+-		log2 debug<<"Done doing elimination\n";
++		gfan_log2 debug<<"Done doing elimination\n";
+ //		break;
+ 		/*
+ 		 * At this point we need to be careful with whether we are projecting in the torus or in affine space
+@@ -150,14 +150,14 @@
+ 	for(int s=-1;s<=1;s+=2)
+ 	{
+ 		IntegerVector v=s*IntegerVector::standardVector(n,i);
+-		log2 debug<<"Tropical variety membership test of ray:"<<v<<"\n";
++		gfan_log2 debug<<"Tropical variety membership test of ray:"<<v<<"\n";
+ 		stat_isInTropicalVariety++;
+ 		if(isInTropicalVariety(I,v,false))
+ 		{
+ 			ret.push_back(s*IntegerVector::standardVector(n,i));
+ 			if(earlyExit)return ret;
+ 		}
+-		log2 debug<<"Done membership test.\n";
++		gfan_log2 debug<<"Done membership test.\n";
+ 	}
+ 	IntegerVectorList lowerDimList=tropicalCurve(J2,earlyExit);
+ 	//assert(!lowerDimList.empty());
+@@ -170,14 +170,14 @@
+ 	 * Do initial ideal computation and collect produced polynomials for filter.
+ 	 */
+ 
+-	log2 debug<<"We obtained lift candidates:"<<lowerDimList<<"\n";
++	gfan_log2 debug<<"We obtained lift candidates:"<<lowerDimList<<"\n";
+ 
+ 	IntegerVectorList complicatedList;
+ 	IntegerVectorList toCheck;
+ 
+ 	for(IntegerVectorList::const_iterator k=lowerDimList.begin();k!=lowerDimList.end();k++)
+ 	{
+-		log2 debug<<"Doing polyhedral computations1\n";
++		gfan_log2 debug<<"Doing polyhedral computations1\n";
+ #if 1
+ 		IntegerVectorList generators;generators.push_back((concatenation(IntegerVector(1),*k)));
+ 		IntegerVectorList lin;lin.push_back((IntegerVector::standardVector(n,i)));
+@@ -270,9 +270,9 @@
+ 			}
+ 		}*/
+ 
+-		log2 debug<<"Done with polyhedral computations\n";
++		gfan_log2 debug<<"Done with polyhedral computations\n";
+ 
+-		log2 debug<<"Intersection fan dim "<<fanDim<<"\n";
++		gfan_log2 debug<<"Intersection fan dim "<<fanDim<<"\n";
+ 
+ 		assert(fanDim!=0);
+ 		if(fanDim==1)
+@@ -284,7 +284,7 @@
+ 				if(!j->subvector(1,n).isZero())
+ 					candidates.push_back(*j);
+ 
+-			log2 debug<<"Number of candidates "<<(int)candidates.size()<<"\n";
++			gfan_log2 debug<<"Number of candidates "<<(int)candidates.size()<<"\n";
+ 
+ 			if(candidates.size()==1)
+ 			{
+@@ -306,8 +306,8 @@
+ 
+ 
+ 
+-	log2 debug<<"Checking complicated list:\n";
+-	log2 debug<<complicatedList<<"\n";
++	gfan_log2 debug<<"Checking complicated list:\n";
++	gfan_log2 debug<<complicatedList<<"\n";
+ 
+ 	PolynomialSet additionalPolys=I.getRing();
+ 
+@@ -317,7 +317,7 @@
+ 		for(IntegerVectorList::const_iterator k=complicatedList.begin();k!=complicatedList.end();k++)
+ 			supportSum+=k->supportAsZeroOneVector();
+ 
+-		log2 debug<<"Support sum:"<<supportSum<<"\n";
++		gfan_log2 debug<<"Support sum:"<<supportSum<<"\n";
+ 		int j=supportSum.argMax();
+ 
+ 
+@@ -344,18 +344,18 @@
+ 
+ 		PolynomialRing newRing3=I.getRing().withVariablesAppended("H");
+ 		PolynomialSet J=I.homogenization(newRing3);
+-		log2 debug<<"Doing elimination\n";
++		gfan_log2 debug<<"Doing elimination\n";
+ 		buchberger(&J,T,true);
+ 		J.changeNumberOfVariables(I.getRing());
+ 		PolynomialRing newRing2(newRing.getField(),2);
+ 		PolynomialSet P=J.polynomialRingIntersection(newRing2,&chosenVariables);
+ #endif
+ 		additionalPolys.splice(additionalPolys.end(),J);
+-		log2 debug<<"Done eliminating\n";
+-		log2 debug<<P<<"\n";
++		gfan_log2 debug<<"Done eliminating\n";
++		gfan_log2 debug<<P<<"\n";
+ 		assert(P.size()==1);
+ 
+-		log2 debug<<"Doing polyhedral computation\n";
++		gfan_log2 debug<<"Doing polyhedral computation\n";
+ 		//		debug<<"PFRONT:"<<P.front()<<P.front().exponents()<<"\n";
+ 				//		PolyhedralFan FF=PolyhedralFan::normalFanOfNewtonPolytope(P.front());
+ 		PolyhedralFan FF=PolyhedralFan::bergmanOfPrincipalIdeal(P.front());
+@@ -375,14 +375,14 @@
+ 			F=FF.getRays();
+ 		}
+ 
+-		log2 debug<<"Potential lifts"<<F<<"\n";
++		gfan_log2 debug<<"Potential lifts"<<F<<"\n";
+ 
+ 
+ 		for(IntegerVectorList::iterator k=complicatedList.begin();k!=complicatedList.end();)
+ 			if((*k)[j]!=0)
+ 		{
+ 	//		debug<<I.getRing()<<"\n"<<I;
+-			log2 debug<<"Checking:"<<*k<<" with chosen coordinate:"<<j<<"\n";
++			gfan_log2 debug<<"Checking:"<<*k<<" with chosen coordinate:"<<j<<"\n";
+ 			assert(j!=n);
+ 
+ 			IntegerVectorList preCheck;
+@@ -399,7 +399,7 @@
+ 					IntegerVector v=s1*concatenation(concatenation(k->subvector(0,i),IntegerVector(1)),k->subvector(i,n-1))+s2*(*l)[0]*IntegerVector::standardVector(n,i);
+ 					preCheck.push_back(v);
+ 				}
+-			log2 debug<<"Combined:\n"<<preCheck<<"\n";
++			gfan_log2 debug<<"Combined:\n"<<preCheck<<"\n";
+ 
+ 			IntegerVectorList preCheck2;
+ 			for(IntegerVectorList::const_iterator i=preCheck.begin();i!=preCheck.end();i++)
+@@ -409,7 +409,7 @@
+ 					preCheck2.push_back(*i);
+ 			}
+ 
+-			log2 debug<<"Combined2:\n"<<preCheck2<<"\n";
++			gfan_log2 debug<<"Combined2:\n"<<preCheck2<<"\n";
+ 			if(preCheck2.size()==1)
+ 				ret.splice(ret.end(),preCheck2);
+ 			else
+@@ -506,7 +506,7 @@
+ #endif
+ 
+ 
+-	log2 debug<<"OldtoCheck:"<<toCheck;
++	gfan_log2 debug<<"OldtoCheck:"<<toCheck;
+ 	{
+ 		IntegerVectorList toCheck2;
+ 		for(IntegerVectorList::const_iterator i=toCheck.begin();i!=toCheck.end();i++)
+@@ -519,10 +519,10 @@
+ 	}
+ 
+ 
+-	log2 debug<<"Checking to check list\n";
++	gfan_log2 debug<<"Checking to check list\n";
+ 
+-	log2 debug<<"Already produced:"<<ret;
+-	log2 debug<<"toCheck:"<<toCheck;
++	gfan_log2 debug<<"Already produced:"<<ret;
++	gfan_log2 debug<<"toCheck:"<<toCheck;
+ 
+ 	for(IntegerVectorList::const_iterator i=toCheck.begin();i!=toCheck.end();i++)
+ 	{
+@@ -545,7 +545,7 @@
+ 		debug<<"*k"<<*k<<"\n";
+ 		//FF.printWithIndices(&debug);
+ */
+-	log2
++	gfan_log2
+ 	{
+ 		debug<<"At dimension "<<n<<"\n";
+ 		debug<<"To Check\n"<<toCheck;
+diff -ru a/src/tropicaltraverse.cpp b/src/tropicaltraverse.cpp
+--- a/src/tropicaltraverse.cpp	2026-04-03 00:06:23.859809616 +0800
++++ b/src/tropicaltraverse.cpp	2026-04-03 01:30:43.987579063 +0800
+@@ -204,7 +204,7 @@
+ static void changeCone(PolynomialSet &coneGroebnerBasis, PolynomialSet &idealGroebnerBasis, IntegerVector const &ridgeVector, IntegerVector const &rayVector)
+ {
+   assert(idealGroebnerBasis.containsInClosedGroebnerCone(ridgeVector));
+-  log2 cerr<<endl<<"Changing cone"<<endl;
++  gfan_log2 cerr<<endl<<"Changing cone"<<endl;
+ 
+   assert(!containsMonomial(coneGroebnerBasis));
+ 
+@@ -218,7 +218,7 @@
+   WeightReverseLexicographicTermOrder T(rayVector);
+ 
+   //  P<<ridgeIdeal;
+-  log2 cerr<<"Computing initial Groebner basis"<<endl;
++  gfan_log2 cerr<<"Computing initial Groebner basis"<<endl;
+   //  buchberger(&ridgeIdeal,T);
+ 
+   ridgeIdeal=GE_groebnerBasis(ridgeIdeal,T,true,false);//Set to true?
+@@ -229,7 +229,7 @@
+   //  WeightTermOrder termOrder(termorderWeight(ridgeIdeal));
+   WeightTermOrder termOrder(termorderWeight(ridgeIdealOld));
+ 
+-  log2 cerr<<"Lifting"<<endl;
++  gfan_log2 cerr<<"Lifting"<<endl;
+   PolynomialSet temp=ridgeIdealOld;
+   temp.markAndScale(T);
+   temp=temp.markedTermIdeal();
+@@ -249,7 +249,7 @@
+     }
+   assert(g2.isMarked());
+   //printMarkedTermIdeal(g2,"g2");
+-  log2 cerr<<"Autoreducing"<<endl;
++  gfan_log2 cerr<<"Autoreducing"<<endl;
+ 
+   //  autoReduce(&g2,LexicographicTermOrder());
+   //PolynomialSet g2Old=g2;
+@@ -265,7 +265,7 @@
+   assert(idealGroebnerBasis.size()==oldSize);
+   //  idealGroebnerBasis=g2;
+   assert(!containsMonomial(coneGroebnerBasis));
+-  log2 cerr<<"Done changing cone"<<endl<<endl;
++  gfan_log2 cerr<<"Done changing cone"<<endl<<endl;
+ 
+   //  P<<coneGroebnerBasis;
+   //  P<<idealGroebnerBasis;
+@@ -284,7 +284,7 @@
+     P<<coneGroebnerBasis;
+     }*/
+ 
+-  log2 cerr << "Number of terms in new basis: "<< g2.totalNumberOfTerms()<<endl;
++  gfan_log2 cerr << "Number of terms in new basis: "<< g2.totalNumberOfTerms()<<endl;
+ }
+ 
+ void printStack(list<pathStepFacet> const &facetStack, list<pathStepRidge> const &ridgeStack)
+diff -ru a/src/wallideal.cpp b/src/wallideal.cpp
+--- a/src/wallideal.cpp	2026-04-03 00:06:23.863809616 +0800
++++ b/src/wallideal.cpp	2026-04-03 01:30:43.987579063 +0800
+@@ -1055,7 +1055,7 @@
+   //  log0 fprintf(Stderr,"Number of inequalities:%i\n",normals.size());
+ 
+   //  log0 fprintf(Stderr,"G");
+-  //log2 cerr << "Fast normals end" << endl;
++  //gfan_log2 cerr << "Fast normals end" << endl;
+   return normals;
+ }
+ 
