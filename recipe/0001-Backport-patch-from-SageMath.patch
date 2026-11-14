@@ -1,0 +1,37 @@
+From 0178363d6ba9b6df17b80f1663507dd253d3fd2c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sat, 14 Nov 2026 03:12:15 -0600
+Subject: [PATCH 1/2] Backport patch from SageMath
+
+not sure whether it's still neded on macOS but it doesn't hurt.
+
+Original commit:
+
+commit 21464333b254d31bfe95801d575b203d9a9731cf
+Author: Dima Pasechnik <dimpase@gmail.com>
+Date:   Thu Apr 12 10:14:53 2018 +0100
+
+    Fixes miscompilation by clang from XCode 6.3, see #25118
+
+    Without this, on most archs one gets "Illegal Instruction 4" error,
+    probably due to an over-optimisation.
+    As this is at the end of the main function, it is safe to just delete this delete.
+---
+ src/app_main.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/app_main.cpp b/src/app_main.cpp
+index a33c042..dd34926 100644
+--- a/src/app_main.cpp
++++ b/src/app_main.cpp
+@@ -205,7 +205,6 @@ public:
+     }
+ 
+     ep->close();
+-    delete ep;//<--- In next release, make the class virtual
+ 
+     printf("\n");
+ 
+-- 
+2.56.0
+

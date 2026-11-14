@@ -1,27 +1,26 @@
-{% set version = "0.6.2" %}
+{% set version = "0.7" %}
 {% set name = "gfan" %}
 
 package:
   name: {{ name }}
-  version: {{ version }}
+  version: "{{ version }}"
 
 source:
   fn: {{ name }}{{ version }}.tar.gz
   url: http://home.math.au.dk/jensen/software/gfan/gfan{{ version }}.tar.gz
-  sha256: a674d5e5dc43634397de0d55dd5da3c32bd358d05f72b73a50e62c1a1686f10a
+  sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
   patches:
-    # Patches taken from https://github.com/sagemath/sage
-    - patches/nodel.patch
-    # patch Makefile to use CXXFLAGS, LDFLAGS, etc.
-    - patches/Makefile.patch
+    - 0001-Backport-patch-from-SageMath.patch
+    - 0002-Port-SageMath-patch-to-gfan-Makefile-to-0.7.patch
 
 build:
-  number: 1003
+  number: 0
   skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - make
     - gfan  # [build_platform != target_platform]
   host:
