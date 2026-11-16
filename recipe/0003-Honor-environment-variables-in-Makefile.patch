@@ -1,0 +1,58 @@
+From 746513896faca3bfcfdfd242adddf585cee08419 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sun, 15 Nov 2026 20:13:50 -0600
+Subject: [PATCH 3/7] Honor environment variables in Makefile
+
+---
+ Makefile | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 67c8164..69d5516 100644
+--- a/Makefile
++++ b/Makefile
+@@ -119,7 +119,6 @@ SHELL       = /bin/sh
+ 
+ CC          = $(PREFIX)gcc
+ CLINKER     = $(CC)
+-CXX         = $(PREFIX)g++
+ CCLINKER    = $(CXX)
+ 
+ #CC          = $(PREFIX)gcc-8.1
+@@ -416,14 +415,6 @@ GFANLIBFILES= 	gfanlib.h \
+ 
+ EXECS	  = $(MAIN)
+ 
+-# When compiling symmetrictraversal.cpp as any other file, it causes the program to crash in certain situations.
+-# (compiling with gcc version 4.7.2 and running gfan _tropicaltraverse on a starting cone for Grassmann3_7)
+-# Either this is a bug in the code or in the compiler. The bug disappears by compiling with -fno-guess-branch-probability
+-src/symmetrictraversal.o: src/symmetrictraversal.cpp
+-	$(CXX) $(CFLAGS) -fno-guess-branch-probability  -c src/symmetrictraversal.cpp -o src/symmetrictraversal.o
+-# If compiling with clang, use the line below instead:
+-#	$(CXX) $(CFLAGS) -c src/symmetrictraversal.cpp -o src/symmetrictraversal.o
+-
+ # Define suffixes to make the program compile on legolas.imf.au.dk :
+ .SUFFIXES: .o .cpp .c
+ 
+@@ -507,8 +498,7 @@ $(PREFIX):
+ default: $(OBJECTS) $(ADDITIONALOBJECTS) $(EXECS)
+ 
+ $(MAIN): $(OBJECTS)
+-#	$(CCLINKER) $(OBJECTS) $(ADDITIONALLINKOPTIONS) $(GPROFFLAG) -lpthread  -o $(MAIN)
+-	$(CCLINKER) $(OBJECTS) $(ADDITIONALLINKOPTIONS) $(GPROFFLAG) -lpthread -rdynamic -o $(MAIN)
++	$(CXX) $^ $(LDFLAGS) -o $@
+ 
+ release:
+ 	rm -f -r $(RELEASEDIR)/*
+@@ -634,7 +624,7 @@ check:
+ .c.o:
+ 	$(CC) $(CFLAGS) -c $< -o $(patsubst %.c,%.o,$<)
+ .cpp.o:
+-	$(CXX) $(CFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
++	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $(patsubst %.cpp,%.o,$<)
+ 
+ # wget http://ftp.sunet.se/pub/gnu/gmp/gmp-4.2.2.tar.gz
+ # tar -xzvf gmp-4.2.2.tar.gz
+-- 
+2.56.0
+

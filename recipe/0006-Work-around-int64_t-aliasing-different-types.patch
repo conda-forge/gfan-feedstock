@@ -1,0 +1,40 @@
+From 307df8aae3cff56e447eed57638cc737f3236831 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sun, 15 Nov 2026 21:42:56 -0600
+Subject: [PATCH 6/7] Work around int64_t aliasing different types
+
+apparently it's long int on GCC/Linux and long long int on clang/macOS
+---
+ src/gfanlib_circuittableint.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/gfanlib_circuittableint.h b/src/gfanlib_circuittableint.h
+index 2b5ced4..8eef191 100644
+--- a/src/gfanlib_circuittableint.h
++++ b/src/gfanlib_circuittableint.h
+@@ -24,7 +24,7 @@ namespace gfan{
+      work for 128 bit integers. Therefore we define: */
+   template<typename> struct MyMakeUnsigned;
+   template <> struct MyMakeUnsigned<int>{typedef unsigned int type;};
+-  template <> struct MyMakeUnsigned<long int>{typedef unsigned long int type;};
++  template <> struct MyMakeUnsigned<std::int64_t>{typedef std::uint64_t type;};
+   template <> struct MyMakeUnsigned<__int128>{typedef unsigned __int128 type;};
+ 
+   class MVMachineIntegerOverflow: public std::exception
+@@ -205,11 +205,11 @@ public:
+ 
+ template <> struct MyMakeUnsigned<my256s>{typedef my256u type;};
+ 
+-static long int extMul(int a, int b)
++static std::int64_t extMul(int a, int b)
+ {
+ 	return ((long int)a)*((long int)b);
+ }
+-static __int128_t extMul(long int a, long int b)
++static __int128_t extMul(std::int64_t a, std::int64_t b)
+ {
+ 	return ((__int128_t)a)*((__int128_t)b);
+ }
+-- 
+2.56.0
+

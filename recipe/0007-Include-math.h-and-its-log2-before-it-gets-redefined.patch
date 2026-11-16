@@ -1,0 +1,25 @@
+From 57cbc2d79e538238c7dc59f275de88b3d996d53f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sun, 15 Nov 2026 22:42:23 -0600
+Subject: [PATCH 7/7] Include math.h and its log2 before it gets redefined
+
+---
+ src/log.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/log.h b/src/log.h
+index 2a197f4..251c178 100644
+--- a/src/log.h
++++ b/src/log.h
+@@ -1,6 +1,8 @@
+ #ifndef LOG_H_INCLUDED
+ #define LOG_H_INCLUDED
+ 
++#include <cmath>
++
+ /* The main purpose of this file is to define notation for identifying the
+    parts of the Gfan code that prints out debug information.
+    Later this notation will probably change.
+-- 
+2.56.0
+
