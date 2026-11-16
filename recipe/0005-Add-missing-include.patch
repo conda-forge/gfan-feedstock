@@ -1,0 +1,37 @@
+From 0dd1ebb57487051d25bb72349ba0b727caee1d6b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sun, 15 Nov 2026 20:53:19 -0600
+Subject: [PATCH 5/5] Add missing include
+
+---
+ src/app_anton.h                        | 1 +
+ src/gfanlib_hypersurfaceintersection.h | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/app_anton.h b/src/app_anton.h
+index 37dc1b7..082d8ab 100644
+--- a/src/app_anton.h
++++ b/src/app_anton.h
+@@ -6,6 +6,7 @@
+ #include <unordered_map>
+ #include <set>
+ #include <algorithm>
++#include <memory>
+ #include "parser.h"
+ #include "gfanapplication.h"
+ #include "linalg.h"
+diff --git a/src/gfanlib_hypersurfaceintersection.h b/src/gfanlib_hypersurfaceintersection.h
+index 3f63744..faf4763 100644
+--- a/src/gfanlib_hypersurfaceintersection.h
++++ b/src/gfanlib_hypersurfaceintersection.h
+@@ -11,6 +11,7 @@
+ 
+ #include "gfanlib_tableau.h"
+ #include <functional>
++#include <atomic>
+ 
+ namespace gfan{
+ 
+-- 
+2.56.0
+
