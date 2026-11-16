@@ -15,6 +15,7 @@ source:
     - 0001-Backport-patch-from-SageMath.patch
     - 0002-Add-missing-includes.patch
     - 0003-Honor-environment-variables-in-Makefile.patch
+    - 0004-Use-C-17-headers.patch
 
 build:
   number: 0

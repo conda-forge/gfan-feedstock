@@ -1,0 +1,79 @@
+From 30aaf1d0eb2d92a9889917516cdfdfdca2793e0f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
+Date: Sun, 15 Nov 2026 20:43:01 -0600
+Subject: [PATCH 4/4] Use C++17 headers
+
+---
+ src/gfanlib_memoryresource.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/src/gfanlib_memoryresource.h b/src/gfanlib_memoryresource.h
+index 3eb9e2c..74a5c64 100644
+--- a/src/gfanlib_memoryresource.h
++++ b/src/gfanlib_memoryresource.h
+@@ -6,9 +6,9 @@
+  *      Author: anders
+  */
+ 
+-#include <experimental/memory_resource>
++#include <memory_resource>
+ #include <iostream>
+-#include <experimental/vector>
++#include <vector>
+ #include <assert.h>
+ 
+ 
+@@ -42,9 +42,9 @@ void test() {
+ 
+ template<typename a>
+ //using std::experimental::pmr pmr;
+-using pmrvector=std::experimental::pmr::vector<a>;
+-typedef std::experimental::pmr::memory_resource MR; //Maybe this should be polymorphic_allocator<byte> instead - at least for the constructors using these
+-using std::experimental::pmr::get_default_resource;
++using pmrvector=std::pmr::vector<a>;
++typedef std::pmr::memory_resource MR; //Maybe this should be polymorphic_allocator<byte> instead - at least for the constructors using these
++using std::pmr::get_default_resource;
+ 
+ //DELETE
+ class ResourceWrapper: public MR{
+@@ -76,7 +76,7 @@ public:
+ 	}
+ };
+ 
+-class StackResource: public std::experimental::pmr::memory_resource{
++class StackResource: public std::pmr::memory_resource{
+   /*
+    *
+    * Layout of memory
+@@ -98,7 +98,7 @@ class StackResource: public std::experimental::pmr::memory_resource{
+ 	The header is 4 byte aligned, while the alignment of each block is specified at allocation.
+    */
+ public:
+-  std::experimental::pmr::vector<char> mem;
++  std::pmr::vector<char> mem;
+   int topHeader;
+   int nbytes;
+   memory_resource* parentResource;
+@@ -124,8 +124,8 @@ public:
+ 	  return (firstPossible+((align-1)|(minimumAlignment-1)))& ~((align-1)|(minimumAlignment-1));
+   }
+   StackResource(int nbytes_,
+-		memory_resource* parentResource_=std::experimental::pmr::new_delete_resource(),
+-		memory_resource* fallBackResource_=std::experimental::pmr::null_memory_resource()):
++		memory_resource* parentResource_=std::pmr::new_delete_resource(),
++		memory_resource* fallBackResource_=std::pmr::null_memory_resource()):
+ 	topHeader(0),
+     nbytes(nbytes_),
+     mem(nbytes_,parentResource_),
+@@ -254,7 +254,7 @@ public:
+ };
+ 
+ 
+-std::string memoryResourceToString(const std::experimental::pmr::memory_resource *mr);
++std::string memoryResourceToString(const std::pmr::memory_resource *mr);
+ 
+ // DELETE?
+ class ResourceInvariant
+-- 
+2.56.0
+

@@ -1,7 +1,7 @@
 From 5ef57edf804393e2a8caa2287e8e2e65d80ec928 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
 Date: Sat, 14 Nov 2026 04:22:10 -0600
-Subject: [PATCH 2/3] Add missing includes
+Subject: [PATCH 2/4] Add missing includes
 
 ---
  src/gfanlib_z.h | 4 +++-
