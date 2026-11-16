@@ -4,8 +4,9 @@ export CPPFLAGS="$CPPFLAGS -DNOCDDPREFIX -DDISABLE_COMMENTATOR -DGMPRATIONAL -I$
 export LDFLAGS="$LDFLAGS -lcddgmp -lgmp -lm -lpthread"
 export CXXFLAGS="$CXXFLAGS -g -fPIC -std=c++20"
 
-if [[ "$target_platform" == "osx-64" ]]; then
-  find ${SRC_DIR}/src -type f -print0 | xargs -0 sed -i '' "s/log2/logger2/g"
+if [[ "$(uname)" == "Darwin" ]]; then
+  # We need experimental-library to get ::seq and ::par
+  export CXXFLAGS="$CXXFLAGS -fexperimental-library"
 fi
 
 make -j${CPU_COUNT}
