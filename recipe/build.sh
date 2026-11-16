@@ -1,9 +1,8 @@
 #!/bin/bash
 
-export CPPFLAGS="-DNOCDDPREFIX -DDISABLE_COMMENTATOR $CPPFLAGS"
-export LDFLAGS="$LDFLAGS -lcddgmp -lgmp -lm"
-export CFLAGS="-g -fPIC $CFLAGS"
-export CXXFLAGS="-DNOCDDPREFIX -g -fPIC $CXXFLAGS"
+export CPPFLAGS="$CPPFLAGS -DNOCDDPREFIX -DDISABLE_COMMENTATOR -DGMPRATIONAL -I$PREFIX/include/cddlib -Wno-return-type"
+export LDFLAGS="$LDFLAGS -lcddgmp -lgmp -lm -lpthread"
+export CXXFLAGS="$CXXFLAGS -g -fPIC -std=c++20"
 
 if [[ "$target_platform" == "osx-64" ]]; then
   find ${SRC_DIR}/src -type f -print0 | xargs -0 sed -i '' "s/log2/logger2/g"

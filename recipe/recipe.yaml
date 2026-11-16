@@ -11,10 +11,10 @@ package:
 source:
   url: http://home.math.au.dk/jensen/software/gfan/gfan${{ version }}.tar.gz
   sha256: ab833757e1e4d4a98662f4aa691394013ea9a226f6416b8f8565356d6fcc989e
-  file_name: ${{ name }}${{ version }}.tar.gz
   patches:
     - 0001-Backport-patch-from-SageMath.patch
-    - 0002-Port-SageMath-patch-to-gfan-Makefile-to-0.7.patch
+    - 0002-Add-missing-includes.patch
+    - 0003-Honor-environment-variables-in-Makefile.patch
 
 build:
   number: 0
