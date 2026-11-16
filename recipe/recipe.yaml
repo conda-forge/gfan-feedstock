@@ -17,6 +17,7 @@ source:
     - 0003-Honor-environment-variables-in-Makefile.patch
     - 0004-Use-C-17-headers.patch
     - 0005-Add-missing-include.patch
+    - 0006-Work-around-int64_t-aliasing-different-types.patch
 
 build:
   number: 0

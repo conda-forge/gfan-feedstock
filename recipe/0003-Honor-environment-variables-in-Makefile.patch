@@ -1,7 +1,7 @@
 From 746513896faca3bfcfdfd242adddf585cee08419 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
 Date: Sun, 15 Nov 2026 20:13:50 -0600
-Subject: [PATCH 3/5] Honor environment variables in Makefile
+Subject: [PATCH 3/6] Honor environment variables in Makefile
 
 ---
  Makefile | 14 ++------------

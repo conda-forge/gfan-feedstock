@@ -1,7 +1,7 @@
 From 81ba6d1c9abcf847ed94234f7cfd9deaf4b8f973 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
 Date: Sun, 15 Nov 2026 20:43:01 -0600
-Subject: [PATCH 4/5] Use C++17 headers
+Subject: [PATCH 4/6] Use C++17 headers
 
 ---
  src/gfanlib_memoryresource.cpp |  2 +-
