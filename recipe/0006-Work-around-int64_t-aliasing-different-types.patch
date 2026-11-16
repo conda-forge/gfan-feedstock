@@ -1,7 +1,7 @@
 From 307df8aae3cff56e447eed57638cc737f3236831 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Julian=20R=C3=BCth?= <julian.rueth@fsfe.org>
 Date: Sun, 15 Nov 2026 21:42:56 -0600
-Subject: [PATCH 6/6] Work around int64_t aliasing different types
+Subject: [PATCH 6/7] Work around int64_t aliasing different types
 
 apparently it's long int on GCC/Linux and long long int on clang/macOS
 ---
